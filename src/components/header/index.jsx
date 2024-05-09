@@ -26,12 +26,12 @@ export default function Header() {
             >
               Đăng ký
             </Button>
-            <button
-              className="border-[2px] text-blue-600 border-blue-500 px-5 p-1 rounded-md cursor-pointer active:bg-blue-300"
-              onClick={() => router.push("/login")}
+            <Button
+              className="h-11"
+              // onClick={() => router.push("/login")}
             >
               Đăng nhập
-            </button>
+            </Button>
           </div>
         </div>
       </div>

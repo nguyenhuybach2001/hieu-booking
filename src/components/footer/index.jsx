@@ -1,22 +1,14 @@
 import React from "react";
 import { footer } from "./config";
-import {
-  AimOutlined,
-  PhoneOutlined,
-  FacebookOutlined,
-  MessageOutlined,
-  YoutubeOutlined,
-  InstagramOutlined,
-} from "@ant-design/icons";
 
 export default function Footer() {
   return (
-    <div className="mt-auto bg-indigo-900 text-white">
-      <div className="container pl-56 py-10 flex gap-10">
-        <div className="flex gap-16">
+    <div className="mt-auto bg-slate-800 text-white">
+      <div className="max-w-6xl  w-full mx-auto px-12 py-20 gap-24 grid grid-cols-5 text-sm">
+        <div className="col-span-3 flex gap-20">
           {footer.map((item, i) => (
             <div key={i}>
-              <p className="text-lg font-bold">{item.title}</p>
+              <p className="font-bold">{item.title}</p>
               {item.contents.map((content, index) => (
                 <p key={index} className="mt-5">
                   {content.subtitle}
@@ -25,19 +17,20 @@ export default function Footer() {
             </div>
           ))}
         </div>
-        <div>
-          <div>
-            <AimOutlined className="text-3xl mr-3" /> 2972 Westheimer RD.Santa
+        <div className="col-span-2 ">
+          <div className="flex items-center">
+            <img src="/images/location.webp" alt="" className="w-[40px] h-[40px]"/> 2972 Westheimer RD.Santa
             Ana, Illinois 85486
           </div>
-          <div className="mt-5">
-            <PhoneOutlined className="text-3xl mr-3" /> (303) 555-0105
+          <div className="flex items-center mt-10">
+          <img src="/images/phone.webp" alt="" className="w-[35px] h-[35px]"/> (303) 555-0105
           </div>
-          <div className="mt-5">
-            <FacebookOutlined className="text-3xl mr-3" />{" "}
-            <MessageOutlined className="text-3xl mr-3" />{" "}
-            <YoutubeOutlined className="text-3xl mr-3" />{" "}
-            <InstagramOutlined className="text-3xl mr-3" />
+          <div className="flex items-center mt-10 gap-5">
+          <img src="/images/twitter.webp" alt="" className="w-[40px] h-[40px]"/>
+          <img src="/images/facebook.webp" alt="" className="w-[40px] h-[40px]"/>
+          <img src="/images/message.webp" alt="" className="w-[40px] h-[40px]"/>
+          <img src="/images/linkedin.webp" alt="" className="w-[40px] h-[40px]"/>
+          <img src="/images/youtube.webp" alt="" className="w-[40px] h-[30px]"/>
           </div>
         </div>
       </div>

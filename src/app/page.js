@@ -14,42 +14,43 @@ export default function Home() {
           <p className="text-white text-3xl font-medium mt-7">
             Hành trình của bạn, niềm vui của chúng tôi.
           </p>
-          <Search />
         </div>
       </div>
-      <div className="bg-slate-100">
-        <div className="max-w-6xl w-full mx-auto flex gap-14 ">
-          {items.map((item, i) => (
-            <div key={i}>
-              <img
-                src={item.src}
-                alt=""
-                className="w-[100px] h-[100px] mx-auto"
-              />
-              <p className="mx-auto w-max my-5 text-2xl font-medium">
-                {item.title}
-              </p>
-              <p>{item.content}</p>
-            </div>
-          ))}
-        </div>
 
-        <hr className="max-w-5xl mx-auto h-1 bg-stone-400 my-16" />
-
-        <div className="max-w-6xl w-full mx-auto pb-20">
-          <div className="font-medium text-3xl flex gap-2">
-            Các tuyến phổ biến <RightOutlined className="text-2xl" />
-          </div>
-          <div className="grid grid-cols-4">
-            {options.map((option, i) => (
-              <Buses 
-              key={i}
-              image={option.image}
-              title={option.title}
-              price={option.price}
-              time={option.time}
-              />
+      <div className="bg-slate-200">
+        <div className="max-w-6xl  w-full mx-auto px-12">
+          <Search />
+          <div className="flex gap-14 mt-10">
+            {items.map((item, i) => (
+              <div key={i}>
+                <img
+                  src={item.src}
+                  alt=""
+                  className="w-[100px] h-[100px] mx-auto"
+                />
+                <p className="mx-auto w-max my-5 text-2xl font-medium">
+                  {item.title}
+                </p>
+                <p>{item.content}</p>
+              </div>
             ))}
+          </div>
+          <hr className="max-w-4xl mx-auto h-1 bg-stone-700 my-10" />
+          <div>
+            <div className="font-medium text-3xl flex gap-2 mb-5">
+              Các tuyến phổ biến <RightOutlined className="text-2xl" />
+            </div>
+            <div className="grid grid-cols-4 gap-x-10 gap-y-5 pb-16">
+              {options.map((option, i) => (
+                <Buses
+                  key={i}
+                  image={option.image}
+                  title={option.title}
+                  price={option.price}
+                  time={option.time}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -4,10 +4,12 @@ import { DatePicker, Select } from "antd";
 import dayjs from "dayjs";
 import { Option } from "antd/es/mentions";
 import React from "react";
+import { usePathname } from "next/navigation";
 
 export default function Search() {
+  const pathName = usePathname()
   return (
-    <div className="bg-white h-[135px] rounded-xl">
+    <div className={`bg-white h-[135px] rounded-xl relative ${pathName === "/" ? "-top-12" : ""}`}>
       <div className="grid grid-cols-12 pt-5 pl-10 font-bold">
         <div className="col-span-4">
           <p>Điểm xuất phát</p>
@@ -48,7 +50,7 @@ export default function Search() {
           />
         </div>
         <div className="col-span-2 font-normal ml-5 w-full">
-          <button className="flex items-center gap-2 bg-blue-400 py-3 px-5 ml-5 w-[150px] h-[56px] rounded-md text-white ">
+          <button className="flex items-center gap-2 bg-blue-600 py-3 px-5 ml-5 w-[150px] h-[56px] rounded-md text-white active:bg-blue-400">
             <SearchOutlined className="text-xl" />
             <p>Tìm kiếm</p>
           </button>

@@ -3,7 +3,7 @@ import React from "react";
 import { options } from "./config";
 import Trip from "@/components/trip";
 
-export default function page() {
+export default function SearchPage() {
   const getCurrentDate = () => {
     const currentDate = new Date();
 

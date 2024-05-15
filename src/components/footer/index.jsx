@@ -4,8 +4,8 @@ import { footer } from "./config";
 export default function Footer() {
   return (
     <div className="mt-auto bg-slate-800 text-white">
-      <div className="max-w-6xl  w-full mx-auto px-12 py-20 gap-24 grid grid-cols-5 text-sm">
-        <div className="col-span-3 flex gap-20 w-full">
+      <div className="max-w-6xl  w-full mx-auto px-12 py-20 gap-20 grid grid-cols-5 text-sm">
+        <div className="col-span-3 flex gap-10 w-full">
           {footer.map((item, i) => (
             <div key={i}>
               <p className="font-bold">{item.title}</p>

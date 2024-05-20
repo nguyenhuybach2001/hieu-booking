@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Search from "@/components/search";
 import { items } from "./config";
 import { RightOutlined } from "@ant-design/icons";
@@ -17,21 +18,15 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="bg-slate-200">
+      <div className="bg-slate-100">
         <div className="max-w-6xl  w-full mx-auto px-12">
           <Search />
           <div className="flex gap-14 mt-10">
             {items.map((item, i) => (
-              <div key={i}>
-                <img
-                  src={item.src}
-                  alt=""
-                  className="w-[100px] h-[100px] mx-auto"
-                />
-                <p className="mx-auto w-max my-5 text-2xl font-medium">
-                  {item.title}
-                </p>
-                <p>{item.content}</p>
+              <div className="flex flex-col items-center " key={i}>
+                <img loading="lazy" src={item.src} alt="" decoding="async" />
+                <p className=" my-5 text-2xl font-medium">{item.title}</p>
+                <p className="text-justify">{item.content}</p>
               </div>
             ))}
           </div>

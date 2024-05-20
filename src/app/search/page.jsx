@@ -15,7 +15,7 @@ export default function SearchPage() {
   const currentDate = getCurrentDate();
 
   return (
-    <div className="w-full bg-slate-200 h-full">
+    <div className="w-full bg-slate-100 h-full">
       <div className="max-w-6xl  w-full mx-auto px-12 mb-20">
         <div className="text-xl font-medium mt-10">{currentDate}</div>
         <p className="text-3xl mt-5 mb-10">

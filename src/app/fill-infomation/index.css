@@ -1,0 +1,9 @@
+.bg-b {
+    background: linear-gradient(to top, rgb(0, 152, 255) 25%, transparent 25%);
+    border: 1px, rgb(0, 152, 255), solid;
+    border-radius: 4px;
+}
+
+.margin-top:not(:first-child) {
+    margin-top: 20px;
+}

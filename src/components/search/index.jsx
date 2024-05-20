@@ -1,46 +1,48 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { SearchOutlined } from "@ant-design/icons";
-import { DatePicker, Select } from "antd";
+import { Button, DatePicker, Select } from "antd";
 import dayjs from "dayjs";
 import { Option } from "antd/es/mentions";
 import React from "react";
 import { usePathname } from "next/navigation";
 
 export default function Search() {
-  const pathName = usePathname()
+  const pathName = usePathname();
   return (
-    <div className={`bg-white h-[135px] rounded-xl relative ${pathName === "/" ? "-top-12" : ""}`}>
-      <div className="grid grid-cols-12 pt-5 pl-10 font-bold">
-        <div className="col-span-4">
-          <p>Điểm xuất phát</p>
+    <div
+      className={`bg-white relative rounded-xl p-5 ${
+        pathName === "/" ? "-top-10" : ""
+      }`}
+    >
+      <div className="grid grid-cols-5 gap-5 items-center">
+        <div className="col-span-3 gap-5 grid-cols-9 grid">
+          <div className="col-span-4 flex flex-col gap-3">
+            <p className="font-bold">Điểm xuất phát</p>
+            <Select className="w-full h-[56px] ">
+              <Option value="option 1">option 1</Option>
+              <Option value="option 2">option 2</Option>
+            </Select>
+          </div>
+          <div className="col-span-1 flex justify-center items-center relative top-4">
+            <img
+              loading="lazy"
+              decoding="async"
+              src="/images/repeat.webp"
+              className="w-[32px] h-[32px]"
+            />
+          </div>
+          <div className="col-span-4 flex flex-col gap-3">
+            <p className="font-bold">Điểm đến </p>
+            <Select className="w-full h-[56px] ">
+              <Option value="option 1">option 1</Option>
+              <Option value="option 2">option 2</Option>
+            </Select>
+          </div>
         </div>
-        <div className="col-span-3">
-          <p>Điểm đến </p>
-        </div>
-        <div className="col-span-2 ml-5 w-full">
-          <p>Ngày đi</p>
-        </div>
-      </div>
-      <div className="grid grid-cols-12 pt-2 pl-10 font-bold">
-        <div className="col-span-3">
-          <Select className="w-full h-[56px] " >
-            <Option value="option 1">option 1</Option>
-            <Option value="option 2">option 2</Option>
-          </Select>
-        </div>
-        <div className="col-span-1 m-auto w-max items-center">
-          <img
-            src="/images/repeat.webp"
-            className="w-[32px] h-[32px]"
-          />
-        </div>
-        <div className="col-span-3">
-          <Select className="w-full h-[56px] ">
-            <Option value="option 1">option 1</Option>
-            <Option value="option 2">option 2</Option>
-          </Select>
-        </div>
-        <div className="col-span-2 ml-5 w-full">
+        <div className="col-span-1 flex flex-col gap-3">
+          <p className="font-bold">Ngày đi</p>
           <DatePicker
             className="h-[56px]"
             defaultValue={dayjs()}
@@ -49,11 +51,14 @@ export default function Search() {
             maxDate={dayjs("01-01-2030", "DD-MM-YYYY")}
           />
         </div>
-        <div className="col-span-2 font-normal ml-5 w-full">
-          <button className="flex items-center gap-2 bg-blue-600 py-3 px-5 ml-5 w-[150px] h-[56px] rounded-md text-white active:bg-blue-400">
-            <SearchOutlined className="text-xl" />
-            <p>Tìm kiếm</p>
-          </button>
+        <div className="col-span-1 flex items-end h-full">
+          <Button
+            className="h-14 w-full"
+            type="primary"
+            icon={<SearchOutlined className="text-xl" />}
+          >
+            Tìm kiếm
+          </Button>
         </div>
       </div>
     </div>

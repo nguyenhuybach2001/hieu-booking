@@ -2,9 +2,10 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
-import { Checkbox, Input, Modal } from "antd";
+import { Input, Modal } from "antd";
 import { useRouter } from "next/navigation";
-import { list } from "./config";
+import { list, seats_fisrt, seats_second, seats_third } from "./config";
+import "./index.css";
 
 export default function Info() {
   const [checked, setChecked] = useState([]);
@@ -14,6 +15,7 @@ export default function Info() {
   const [note, setNote] = useState("");
   const [pickOn, setPickOn] = useState(false);
   const [pickOff, setPickOff] = useState(true);
+  const [picked, setPicked] = useState([]);
   const [tick, setTick] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalCompleteOpen, setIsModalCompleteOpen] = useState(false);
@@ -57,9 +59,19 @@ export default function Info() {
       }
     });
   };
+  const handlePickSeat = (id) => {
+    setPicked((prev) => {
+      const isChecked = picked.includes(id);
+      if (isChecked) {
+        return prev.filter((item) => item !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
+  };
 
   return (
-    <div className="w-full bg-slate-200 h-full">
+    <div className="w-full bg-slate-100 h-full">
       <div className="max-w-6xl  w-full mx-auto px-12 mb-20">
         <div className="underline w-max m-auto font-bold text-5xl mt-10">
           Chọn vé
@@ -72,7 +84,65 @@ export default function Info() {
         </div>
         <div className="grid grid-cols-10 mt-10">
           <div className="col-span-7 bg-white border-[2px] border-slate-300 rounded-xl">
-            
+            <div className="my-5 bg-slate-900 py-2 pl-2 pr-10 w-max rounded-r-xl text-white">
+              <p className="font-bold text-lg">Economy</p>
+              <p>Di chuyển tiết kiệm</p>
+            </div>
+            <div className="mx-10 flex justify-between gap-16 pb-10">
+              <div className="bg-slate-100 w-full rounded-xl px-5 pt-3 pb-10">
+                <div className="flex justify-between font-bold items-center">
+                  <img src="./images/wheel.webp" />
+                  <p>Tầng 1</p>
+                </div>
+                <div className="grid grid-cols-3 gap-x-10 gap-y-5 mt-5 text-xl">
+                  {seats_fisrt.map((seat) => (
+                    <div
+                      key={seat.id}
+                      className={`h-16 flex items-center justify-center w-14 cursor-pointer ${
+                        picked.includes(seat.id) ? "bg-b" : ""
+                      }`}
+                      onClick={() => handlePickSeat(seat.id)}
+                    >
+                      {seat.code}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="bg-slate-100 w-full rounded-xl px-5 pt-3 pb-10">
+                <div className="flex justify-between font-bold items-center">
+                  <img src="./images/wheel.webp" />
+                  <p>Tầng 2</p>
+                </div>
+                <div className="flex justify-between gap-y-5 mt-5 text-xl">
+                  <div>
+                    {seats_second.map((seat) => (
+                      <div
+                        key={seat.id}
+                        className={`h-16 flex items-center justify-center w-14 cursor-pointer margin-top ${
+                          picked.includes(seat.id) ? "bg-b" : ""
+                        }`}
+                        onClick={() => handlePickSeat(seat.id)}
+                      >
+                        {seat.code}
+                      </div>
+                    ))}
+                  </div>
+                  <div>
+                    {seats_third.map((seat) => (
+                      <div
+                        key={seat.id}
+                        className={`h-16 flex items-center justify-center w-14 cursor-pointer margin-top ${
+                          picked.includes(seat.id) ? "bg-b" : ""
+                        }`}
+                        onClick={() => handlePickSeat(seat.id)}
+                      >
+                        {seat.code}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="col-span-3 ml-10">
             <div className="bg-white border-[2px] border-slate-300 rounded-xl pb-5">
@@ -128,13 +198,17 @@ export default function Info() {
                   <p className="text-blue-500">1.000.000 VNĐ</p>
                 </div>
                 <div className="flex mt-2 text-xs items-center">
-                    <div onClick={() => setTick(!tick)}>
+                  <div onClick={() => setTick(!tick)}>
                     {tick ? (
-                      <img src="/images/tickblack.webp" alt="" className="w-10"/>
+                      <img
+                        src="/images/tickblack.webp"
+                        alt=""
+                        className="w-10"
+                      />
                     ) : (
-                      <img src="/images/nopick.webp" alt="" className="w-10"/>
+                      <img src="/images/nopick.webp" alt="" className="w-10" />
                     )}
-                    </div>
+                  </div>
                   <p className="ml-3">
                     Tôi đã xem xét và đồng ý với chính sách về giá vé của hãng!
                   </p>
@@ -143,6 +217,7 @@ export default function Info() {
             </div>
           </div>
         </div>
+
         <div className="grid grid-cols-10">
           <div className="col-span-7">
             <div className="mt-10">

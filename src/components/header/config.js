@@ -8,6 +8,10 @@ export const categorys = [
         path:'sdhgf'
     },
     {
+        title:'Tra cứu vé',
+        path:'sdhgf'
+    },
+    {
         title:'Dịch vụ',
         path:'sdhgf'
     },

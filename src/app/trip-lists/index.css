@@ -12,5 +12,9 @@
 }
 
 .custom-table-row:nth-child(odd) {
-    background-color: #e9e8e8;
-  }
+  background-color: #e9e8e8;
+}
+.ant-pagination-next,
+.ant-pagination-prev {
+  display: none !important;
+}

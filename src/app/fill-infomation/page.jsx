@@ -98,7 +98,7 @@ export default function Info() {
                   {seats_fisrt.map((seat) => (
                     <div
                       key={seat.id}
-                      className={`h-16 flex items-center justify-center w-14 cursor-pointer ${
+                      className={`h-16 hover:bg-b flex items-center justify-center w-14 cursor-pointer ${
                         picked.includes(seat.id) ? "bg-b" : ""
                       }`}
                       onClick={() => handlePickSeat(seat.id)}
@@ -118,7 +118,7 @@ export default function Info() {
                     {seats_second.map((seat) => (
                       <div
                         key={seat.id}
-                        className={`h-16 flex items-center justify-center w-14 cursor-pointer margin-top ${
+                        className={`h-16 hover:bg-b flex items-center justify-center w-14 cursor-pointer margin-top ${
                           picked.includes(seat.id) ? "bg-b" : ""
                         }`}
                         onClick={() => handlePickSeat(seat.id)}
@@ -131,7 +131,7 @@ export default function Info() {
                     {seats_third.map((seat) => (
                       <div
                         key={seat.id}
-                        className={`h-16 flex items-center justify-center w-14 cursor-pointer margin-top ${
+                        className={`h-16 hover:bg-b flex items-center justify-center w-14 cursor-pointer margin-top ${
                           picked.includes(seat.id) ? "bg-b" : ""
                         }`}
                         onClick={() => handlePickSeat(seat.id)}

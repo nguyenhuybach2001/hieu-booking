@@ -1,9 +1,14 @@
+"use client";
 import Search from "@/components/search";
 import React from "react";
 import { options } from "./config";
 import Trip from "@/components/trip";
+import { Modal } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { handleModal } from "@/lib/features/searchSlices";
 
 export default function SearchPage() {
+  const dispatch = useDispatch();
   const getCurrentDate = () => {
     const currentDate = new Date();
 
@@ -13,7 +18,7 @@ export default function SearchPage() {
     return `${day}-${month}-${year}`;
   };
   const currentDate = getCurrentDate();
-
+  const modalDetail = useSelector((state) => state.search.modalDetail);
   return (
     <div className="w-full bg-slate-100 h-full">
       <div className="max-w-6xl  w-full mx-auto px-12 mb-20">
@@ -43,20 +48,29 @@ export default function SearchPage() {
           {options.map((option, i) => (
             <div key={i}>
               <Trip
-                vehicle = {option.vehicle}
-                departure = {option.departure}
-                destination = {option.destination}
-                timeStart = {option.timeStart}
-                timeEnd = {option.timeEnd}
-                title = {option.title}
-                content = {option.content}
-                blank = {option.blank}
-                price = {option.price}
+                id={i}
+                vehicle={option.vehicle}
+                departure={option.departure}
+                destination={option.destination}
+                timeStart={option.timeStart}
+                timeEnd={option.timeEnd}
+                title={option.title}
+                content={option.content}
+                blank={option.blank}
+                price={option.price}
               />
             </div>
           ))}
         </div>
       </div>
+      <Modal
+        open={modalDetail}
+        onCancel={() => {
+          dispatch(handleModal(false));
+        }}
+      >
+        <p>gdgdgd</p>
+      </Modal>
     </div>
   );
 }

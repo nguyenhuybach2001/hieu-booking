@@ -3,13 +3,15 @@
 'use client'
 import { addTripId, handleModal } from "@/lib/features/searchSlices";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useDispatch } from "react-redux";
 
 export default function Trip(props) {
+  const router = useRouter()
   const dispatch = useDispatch();
   return (
-    <div className="grid grid-cols-12 bg-white mb-5 rounded-xl">
+    <div className="grid grid-cols-12 bg-white mb-5 rounded-xl" onClick={() => router.push("/fill-infomation")}>
       <div className="col-span-6 grid gap-3 grid-cols-12">
         <div className="col-span-1 bg-slate-700 w-full"></div>
         <div className="col-span-11 p-9">
@@ -38,7 +40,7 @@ export default function Trip(props) {
               dispatch(addTripId(props.id));
               dispatch(handleModal(true));
             }}
-            className="text-blue-400 font-medium underline"
+            className="text-blue-400 font-medium underline cursor-pointer"
           >
             Chi tiết chuyến đi{" "}
           </p>

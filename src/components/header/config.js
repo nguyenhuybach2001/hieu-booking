@@ -9,7 +9,7 @@ export const categorys = [
     },
     {
         title:'Tra cứu vé',
-        path:'sdhgf'
+        path:'lookups'
     },
     {
         title:'Dịch vụ',

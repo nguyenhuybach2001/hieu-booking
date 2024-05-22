@@ -1,11 +1,13 @@
 "use client";
 import { Input } from "antd";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Lookups() {
   const [username, setUserName] = useState("");
   const [number, setNumber] = useState("");
   const [email, setEmail] = useState("");
+  const router = useRouter()
   return (
     <div className="w-full bg-slate-100 h-full">
       <div className="max-w-6xl px-12 mx-auto pb-20">
@@ -53,7 +55,10 @@ export default function Lookups() {
               <button className="bg-white py-3 w-full h-[56px] border-[2px] border-slate-300 rounded-xl hover:bg-blue-600 hover:text-white active:bg-blue-400">
                 Hủy
               </button>
-              <button className="bg-white py-3 w-full h-[56px] border-[2px] border-slate-300 rounded-xl hover:bg-blue-600 hover:text-white active:bg-blue-400">
+              <button
+                className="bg-white py-3 w-full h-[56px] border-[2px] border-slate-300 rounded-xl hover:bg-blue-600 hover:text-white active:bg-blue-400"
+                onClick={() => router.push('/trip-lists')}
+              >
                 Tìm kiếm
               </button>
             </div>

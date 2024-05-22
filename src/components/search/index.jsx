@@ -6,9 +6,15 @@ import { Button, DatePicker, Select } from "antd";
 import dayjs from "dayjs";
 import { Option } from "antd/es/mentions";
 import React from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Search() {
+  const router = useRouter();
+  const handleSearch = () => {
+    if (pathName === "/") {
+      router.push('/search')
+    }
+  };
   const pathName = usePathname();
   return (
     <div
@@ -56,6 +62,7 @@ export default function Search() {
             className="h-14 w-full"
             type="primary"
             icon={<SearchOutlined className="text-xl" />}
+            onClick={handleSearch}
           >
             Tìm kiếm
           </Button>

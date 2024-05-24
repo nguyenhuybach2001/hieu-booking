@@ -36,7 +36,8 @@ export default function Trip(props) {
             </div>
           </div>
           <p
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation()
               dispatch(addTripId(props.id));
               dispatch(handleModal(true));
             }}

@@ -8,7 +8,7 @@ import { list, seats_fisrt, seats_second, seats_third } from "./config";
 import "./index.css";
 
 export default function Info() {
-  const [checked, setChecked] = useState([]);
+  const [checked, setChecked] = useState("");
   const [username, setUserName] = useState("");
   const [number, setNumber] = useState("");
   const [email, setEmail] = useState("");
@@ -16,7 +16,6 @@ export default function Info() {
   const [pickOn, setPickOn] = useState(false);
   const [pickOff, setPickOff] = useState(true);
   const [picked, setPicked] = useState([]);
-  const [tick, setTick] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalCompleteOpen, setIsModalCompleteOpen] = useState(false);
   const router = useRouter();
@@ -50,15 +49,9 @@ export default function Info() {
     router.push("/");
   };
   const handleCheck = (id) => {
-    setChecked((prev) => {
-      const isChecked = checked.includes(id);
-      if (isChecked) {
-        return prev.filter((item) => item !== id);
-      } else {
-        return [...prev, id];
-      }
-    });
+    setChecked(id);
   };
+
   const handlePickSeat = (id) => {
     setPicked((prev) => {
       const isChecked = picked.includes(id);
@@ -69,7 +62,6 @@ export default function Info() {
       }
     });
   };
-
   return (
     <div className="w-full bg-slate-100 h-full">
       <div className="max-w-6xl  w-full mx-auto px-12 mb-20">
@@ -198,17 +190,7 @@ export default function Info() {
                   <p className="text-blue-500">1.000.000 VNĐ</p>
                 </div>
                 <div className="flex mt-2 text-xs items-center">
-                  <div onClick={() => setTick(!tick)}>
-                    {tick ? (
-                      <img
-                        src="/images/tickblack.webp"
-                        alt=""
-                        className="w-10"
-                      />
-                    ) : (
-                      <img src="/images/nopick.webp" alt="" className="w-10" />
-                    )}
-                  </div>
+                  <img src="/images/tickblack.webp" alt="" className="w-10" />
                   <p className="ml-3">
                     Tôi đã xem xét và đồng ý với chính sách về giá vé của hãng!
                   </p>
@@ -296,17 +278,22 @@ export default function Info() {
 
             <div className="mt-10">
               <p className="font-bold text-xl">Hình thức nhận thông báo</p>
-              <div className="bg-white rounded-lg border-[2px] border-slate-300 py-5 pl-10 mt-5 grid grid-cols-3 gap-5 text-lg">
+              <div className="bg-white rounded-lg border-[2px] border-slate-300 py-5 px-10 mt-5 grid grid-cols-3 gap-5 text-lg">
                 {list.map((item) => (
                   <div key={item.id}>
-                    <input
-                      type="checkbox"
-                      style={{ transform: "scale(2)" }}
-                      checked={checked.includes(item.id)}
-                      onChange={() => handleCheck(item.id)}
-                      className="mr-5"
-                    />
-                    {item.content}
+                    <button
+                      className={`border-[2px] border-blue-400 rounded-xl p-3 bg-slate-100 w-full text-left pl-5 flex gap-5 items-center ${
+                        checked === item.id ? "!bg-blue-600 text-white" : ""
+                      }`}
+                      onClick={() => handleCheck(item.id)}
+                    >
+                      {checked === item.id ? (
+                        <img src="/images/pick.webp" alt="" />
+                      ) : (
+                        <img src="/images/nopick.webp" alt="" />
+                      )}
+                      {item.content}
+                    </button>
                   </div>
                 ))}
               </div>

@@ -22,8 +22,8 @@ export default function AdminLayout({ children }) {
   };
 
   useEffect(() => {
-    setSelected(path.includes("show-assets") ? "3" : adminMap[path]);
-  }, []);
+    setSelected(adminMap[path]);
+  }, [path]);
   const items = [
     {
       key: "1",

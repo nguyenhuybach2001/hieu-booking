@@ -15,7 +15,7 @@ export default function Header() {
             className=" font-bold text-5xl cursor-pointer"
             onClick={() => router.push("/")}
           >
-            Logo
+            Binford
           </div>
           <div className=" flex gap-4">
             {categorys.map((category, i) => (

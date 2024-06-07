@@ -5,7 +5,7 @@ export const categorys = [
     },
     {
         title:'Khám phá',
-        path:'sdhgf'
+        path:'discover'
     },
     {
         title:'Tra cứu vé',
@@ -13,14 +13,14 @@ export const categorys = [
     },
     {
         title:'Dịch vụ',
-        path:'sdhgf'
+        path:'service'
     },
     {
         title:'Về chúng tôi',
-        path:'sdhgf'
+        path:'about_us'
     },
     {
         title:'Hỗ trợ',
-        path:'sdhgf'
+        path:'support'
     },
 ]

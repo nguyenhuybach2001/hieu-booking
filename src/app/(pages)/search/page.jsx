@@ -3,15 +3,15 @@ import Search from "@/components/search";
 import React from "react";
 import { options } from "./config";
 import Trip from "@/components/trip";
-import { Modal } from "antd";
+import { Button, Modal, Timeline } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { handleModal } from "@/lib/features/searchSlices";
+import { addTripId, handleModal } from "@/lib/features/searchSlices";
 
 export default function SearchPage() {
   const dispatch = useDispatch();
+  const tripId = useSelector((state) => state.search.tripId);
   const getCurrentDate = () => {
     const currentDate = new Date();
-
     const day = currentDate.getDate();
     const month = currentDate.getMonth() + 1;
     const year = currentDate.getFullYear();
@@ -64,12 +64,63 @@ export default function SearchPage() {
         </div>
       </div>
       <Modal
+        width={400}
         open={modalDetail}
         onCancel={() => {
           dispatch(handleModal(false));
+          dispatch(addTripId(null));
         }}
+        footer={null}
       >
-        <p>gdgdgd</p>
+        <p className="font-bold text-lg">
+          {options[tripId]?.departure} - {options[tripId]?.destination}
+        </p>
+        <p className="font-light mb-8">
+          Khởi hành vào thứ 4 ngày 8 tháng 5 năm 2024
+        </p>
+        <div className="flex relative items-center">
+          <p className="absolute font-light top-6"> 7 giờ 30 phút</p>
+          <Timeline
+            className="w-64"
+            mode={"left"}
+            items={[
+              {
+                label: options[tripId]?.timeStart,
+                children: (
+                  <div>
+                    <p>Hà Nội</p>
+                    <p className="text-sm font-light">
+                      {options[tripId]?.departure}
+                    </p>
+                  </div>
+                ),
+              },
+              {
+                label: options[tripId]?.timeEnd,
+                children: (
+                  <div>
+                    <p>Điện Biên</p>
+                    <p className="text-sm font-light">
+                      {options[tripId]?.destination}
+                    </p>
+                  </div>
+                ),
+              },
+            ]}
+          />
+        </div>
+        <div className="text-center">
+          <Button
+            onClick={() => {
+              dispatch(handleModal(false));
+              dispatch(addTripId(null));
+            }}
+            type="primary"
+          >
+            {" "}
+            Đóng
+          </Button>
+        </div>
       </Modal>
     </div>
   );

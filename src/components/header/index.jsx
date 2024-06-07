@@ -3,6 +3,7 @@ import React from "react";
 import { categorys } from "./config";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Button } from "antd";
 
 export default function Header() {
   const router = useRouter();
@@ -22,6 +23,20 @@ export default function Header() {
                 {category.title}
               </Link>
             ))}
+          </div>
+          <div className="flex gap-5 items-center">
+            <Link href={"/sign-up"} className="text-blue-400">
+              Đăng ký
+            </Link>
+            <Button
+              onClick={() => {
+                router.push("/sign-ìn");
+              }}
+              className="text-blue-400"
+            >
+              {" "}
+              Đăng nhập
+            </Button>
           </div>
         </div>
       </div>

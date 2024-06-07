@@ -68,12 +68,13 @@ export default function Info() {
         <div className="underline w-max m-auto font-bold text-5xl mt-10">
           Chọn vé
         </div>
-        <div className="text-blue-500 my-5 text-xl">
-          <ArrowLeftOutlined />
-          <Link href="/search" className="ml-3">
+
+        <Link href="/search" className="w-fit">
+          <div className="text-blue-500 my-5 text-xl">
+            <ArrowLeftOutlined className="mr-3"/>
             Quay lại trang tìm kiếm
-          </Link>
-        </div>
+          </div>
+        </Link>
         <div className="grid grid-cols-10 mt-10">
           <div className="col-span-7 bg-white border-[2px] border-slate-300 rounded-xl">
             <div className="my-5 bg-slate-900 py-2 pl-2 pr-10 w-max rounded-r-xl text-white">

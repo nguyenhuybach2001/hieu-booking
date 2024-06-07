@@ -1,0 +1,25 @@
+.ant-menu-item {
+  padding-left: 16px !important;
+  border-radius: 40px !important;
+  .ant-menu-item-icon {
+    display: none !important;
+  }
+  .ant-menu-title-content {
+    margin-left: 0 !important;
+    .count {
+      color: white !important;
+      background-color: black;
+      border-radius: 12px;
+    }
+  }
+}
+.ant-menu-item-selected {
+  color: white !important;
+  background-color: #3b7bdb !important;
+  .ant-menu-item-icon {
+    display: block !important;
+  }
+  .ant-menu-title-content {
+    margin-left: 10px !important;
+  }
+}

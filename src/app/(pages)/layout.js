@@ -1,17 +1,16 @@
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import StoreProvider from "./StoreProvider";
 import { Suspense } from "react";
-import Loading from "./loading";
+import Loading from "../loading";
 
 export const metadata = {
   title: "Booking App",
   description: "Booking App",
 };
 
-export default function RootLayout({ children }) {
+export default function PageLayout({ children }) {
   return (
     <html lang="en">
       <head>
@@ -26,9 +25,9 @@ export default function RootLayout({ children }) {
         <title>{metadata.title}</title>
       </head>
       <body className="body relative">
-        <StoreProvider>
-          <Suspense fallback={<Loading />}>{children}</Suspense>
-        </StoreProvider>
+        <Header />
+        <Suspense fallback={<Loading />}>{children}</Suspense>
+        <Footer />
       </body>
     </html>
   );

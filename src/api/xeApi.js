@@ -1,12 +1,12 @@
 import { ENDPOINTS } from "@/config/endpoint";
 import axiosClient from "./axiosClient";
 
-export const hostApi = {
+export const xeApi = {
   getDetailHostByHostId: () => () => {
     return axiosClient.post(ENDPOINTS.GET_DETAIL_HOST);
   },
 
-  createHost: () => () => {
+  createXe: () => () => {
     return axiosClient.post(ENDPOINTS.CREATE_HOST);
   },
   updateRoom: () => (data) => {

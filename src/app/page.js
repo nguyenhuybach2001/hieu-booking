@@ -4,9 +4,12 @@ import { items } from "./config";
 import { RightOutlined } from "@ant-design/icons";
 import Buses from "@/components/buses";
 import { options } from "@/components/buses/config";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 export default function Home() {
   return (
     <div>
+      <Header />
       <div className="bg-[url('/images/image.webp')] bg-cover h-[420px]">
         <div className="max-w-6xl w-full mx-auto px-12  p-24">
           <p className="text-blue-600 text-5xl font-medium">
@@ -49,6 +52,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

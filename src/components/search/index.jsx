@@ -12,7 +12,7 @@ export default function Search() {
   const router = useRouter();
   const handleSearch = () => {
     if (pathName === "/") {
-      router.push('/search')
+      router.push("/search");
     }
   };
   const pathName = usePathname();
@@ -26,7 +26,7 @@ export default function Search() {
         <div className="col-span-3 gap-5 grid-cols-9 grid">
           <div className="col-span-4 flex flex-col gap-3">
             <p className="font-bold">Điểm xuất phát</p>
-            <Select className="w-full h-[56px] ">
+            <Select className="w-full h-[56px] " allowClear>
               <Option value="option 1">option 1</Option>
               <Option value="option 2">option 2</Option>
             </Select>
@@ -41,7 +41,7 @@ export default function Search() {
           </div>
           <div className="col-span-4 flex flex-col gap-3">
             <p className="font-bold">Điểm đến </p>
-            <Select className="w-full h-[56px] ">
+            <Select className="w-full h-[56px] " allowClear>
               <Option value="option 1">option 1</Option>
               <Option value="option 2">option 2</Option>
             </Select>

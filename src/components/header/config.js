@@ -1,26 +1,26 @@
 export const categorys = [
     {
         title:'Tuyến đường',
-        path:'sdhgf'
+        path:'#'
     },
     {
         title:'Khám phá',
-        path:'discover'
+        path:'/discover'
     },
     {
         title:'Tra cứu vé',
-        path:'lookups'
+        path:'/lookups'
     },
     {
         title:'Dịch vụ',
-        path:'service'
+        path:'/service'
     },
     {
         title:'Về chúng tôi',
-        path:'about_us'
+        path:'/about_us'
     },
     {
         title:'Hỗ trợ',
-        path:'support'
+        path:'/support'
     },
 ]

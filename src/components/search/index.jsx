@@ -26,10 +26,17 @@ export default function Search() {
         <div className="col-span-3 gap-5 grid-cols-9 grid">
           <div className="col-span-4 flex flex-col gap-3">
             <p className="font-bold">Điểm xuất phát</p>
-            <Select className="w-full h-[56px] " allowClear>
-              <Option value="option 1">option 1</Option>
-              <Option value="option 2">option 2</Option>
-            </Select>
+            <Select
+              defaultValue="lucy"
+              className="w-full h-[56px] "
+              allowClear
+              options={[
+                { value: "jack", label: "Jack" },
+                { value: "lucy", label: "Lucy" },
+                { value: "Yiminghe", label: "yiminghe" },
+                { value: "disabled", label: "Disabled", disabled: true },
+              ]}
+            />
           </div>
           <div className="col-span-1 flex justify-center items-center relative top-4">
             <img
@@ -41,10 +48,18 @@ export default function Search() {
           </div>
           <div className="col-span-4 flex flex-col gap-3">
             <p className="font-bold">Điểm đến </p>
-            <Select className="w-full h-[56px] " allowClear>
-              <Option value="option 1">option 1</Option>
-              <Option value="option 2">option 2</Option>
-            </Select>
+
+            <Select
+              defaultValue="lucy"
+              className="w-full h-[56px] "
+              allowClear
+              options={[
+                { value: "jack", label: "Jack" },
+                { value: "lucy", label: "Lucy" },
+                { value: "Yiminghe", label: "yiminghe" },
+                { value: "disabled", label: "Disabled", disabled: true },
+              ]}
+            />
           </div>
         </div>
         <div className="col-span-1 flex flex-col gap-3">

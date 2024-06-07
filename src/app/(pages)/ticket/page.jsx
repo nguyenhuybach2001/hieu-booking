@@ -1,5 +1,6 @@
 "use client";
 import { Modal } from "antd";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -37,7 +38,7 @@ export default function Ticket() {
                 <p className="text-5xl">19:30</p>
               </div>
               <div className="flex w-full items-end">
-                <img
+                <Image
                   loading="lazy"
                   decoding="async"
                   src="/images/iconTime.webp"
@@ -114,7 +115,7 @@ export default function Ticket() {
       <Modal
           title={
             <div className="flex gap-2 items-center text-lg font-bold">
-              <img src="/images/ask.webp" alt="" className="w-5 h-5" /> Xác nhận hủy vé
+              <Image src="/images/ask.webp" alt="" className="w-5 h-5" /> Xác nhận hủy vé
             </div>
           }
           open={open}

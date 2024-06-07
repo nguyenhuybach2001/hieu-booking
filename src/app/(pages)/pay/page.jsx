@@ -1,4 +1,4 @@
-import { QRCode } from "antd";
+import { Image, QRCode } from "antd";
 import React from "react";
 
 export default function PayPage() {
@@ -77,7 +77,7 @@ export default function PayPage() {
                     Số tài khoản: 105870483112"
                   />
                   <div>
-                    <img src="/images/vietin.png" alt="#" className="mb-6" />
+                    <Image src="/images/vietin.png" alt="#" className="mb-6" />
                     <p>
                       Chủ tài khoản:{" "}
                       <span className="font-bold">LE HOANG HIEU</span>

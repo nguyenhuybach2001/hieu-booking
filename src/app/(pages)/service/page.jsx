@@ -2,6 +2,7 @@ import Place from "@/components/place";
 import { places } from "@/components/place/config";
 import React from "react";
 import { services } from "./config";
+import { Image } from "antd";
 
 export default function ServicePage() {
   return (
@@ -26,7 +27,7 @@ export default function ServicePage() {
           </p>
           {services.map((service, i) => (
             <div key={i} className="flex justify-between gap-10 mb-10">
-              <img
+              <Image
                 src={service.image}
                 style={{ order: i % 2 === 1 ? 1 : 2 }}
                 alt=""

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
-import { Input, Modal } from "antd";
+import { Image, Input, Modal } from "antd";
 import { useRouter } from "next/navigation";
 import { list, seats_fisrt, seats_second, seats_third } from "./config";
 import "./index.css";
@@ -71,7 +71,7 @@ export default function Info() {
 
         <Link href="/search" className="w-fit">
           <div className="text-blue-500 my-5 text-xl">
-            <ArrowLeftOutlined className="mr-3"/>
+            <ArrowLeftOutlined className="mr-3" />
             Quay lại trang tìm kiếm
           </div>
         </Link>
@@ -84,7 +84,7 @@ export default function Info() {
             <div className="mx-10 flex justify-between gap-16 pb-10">
               <div className="bg-slate-100 w-full rounded-xl px-5 pt-3 pb-10">
                 <div className="flex justify-between font-bold items-center">
-                  <img src="./images/wheel.webp" />
+                  <Image src="./images/wheel.webp" />
                   <p>Tầng 1</p>
                 </div>
                 <div className="grid grid-cols-3 gap-x-10 gap-y-5 mt-5 text-xl">
@@ -103,7 +103,7 @@ export default function Info() {
               </div>
               <div className="bg-slate-100 w-full rounded-xl px-5 pt-3 pb-10">
                 <div className="flex justify-between font-bold items-center">
-                  <img src="./images/wheel.webp" />
+                  <Image src="./images/wheel.webp" />
                   <p>Tầng 2</p>
                 </div>
                 <div className="flex justify-between gap-y-5 mt-5 text-xl">
@@ -150,7 +150,7 @@ export default function Info() {
               <div className="max-w-56 mx-auto text-xs">
                 <div className="flex justify-between  mt-5 font-medium items-center">
                   <p>Bến xe Bản Phủ</p>
-                  <img
+                  <Image
                     src="/images/arows.webp"
                     alt=""
                     className="w-max mx-auto"
@@ -162,7 +162,7 @@ export default function Info() {
                   <li>19:30 - 06:00</li>
                 </div>
                 <div className="flex gap-2 items-center">
-                  <img src="/images/clock.webp" alt="" />
+                  <Image src="/images/clock.webp" alt="" />
                   <p>7 giờ 30 phút</p>
                 </div>
                 <hr className="w-full my-5 h-[1px] bg-black" />
@@ -191,7 +191,7 @@ export default function Info() {
                   <p className="text-blue-500">1.000.000 VNĐ</p>
                 </div>
                 <div className="flex mt-2 text-xs items-center">
-                  <img src="/images/tickblack.webp" alt="" className="w-10" />
+                  <Image src="/images/tickblack.webp" alt="" className="w-10" />
                   <p className="ml-3">
                     Tôi đã xem xét và đồng ý với chính sách về giá vé của hãng!
                   </p>
@@ -255,9 +255,9 @@ export default function Info() {
                   onClick={() => handlePickOff()}
                 >
                   {pickOff ? (
-                    <img src="/images/pick.webp" alt="" />
+                    <Image src="/images/pick.webp" alt="" />
                   ) : (
-                    <img src="/images/nopick.webp" alt="" />
+                    <Image src="/images/nopick.webp" alt="" />
                   )}
                   Thanh toán khi lên xe
                 </button>
@@ -268,9 +268,9 @@ export default function Info() {
                   onClick={() => handlePickOn()}
                 >
                   {pickOn ? (
-                    <img src="/images/pick.webp" alt="" />
+                    <Image src="/images/pick.webp" alt="" />
                   ) : (
-                    <img src="/images/nopick.webp" alt="" />
+                    <Image src="/images/nopick.webp" alt="" />
                   )}
                   Thanh toán online
                 </button>
@@ -289,9 +289,9 @@ export default function Info() {
                       onClick={() => handleCheck(item.id)}
                     >
                       {checked === item.id ? (
-                        <img src="/images/pick.webp" alt="" />
+                        <Image src="/images/pick.webp" alt="" />
                       ) : (
-                        <img src="/images/nopick.webp" alt="" />
+                        <Image src="/images/nopick.webp" alt="" />
                       )}
                       {item.content}
                     </button>
@@ -329,7 +329,7 @@ export default function Info() {
         <Modal
           title={
             <div className="flex gap-2 items-center text-lg font-bold text-green-600">
-              <img src="/images/tick.webp" alt="" className="w-5 h-5" /> Hoàn
+              <Image src="/images/tick.webp" alt="" className="w-5 h-5" /> Hoàn
               thành
             </div>
           }

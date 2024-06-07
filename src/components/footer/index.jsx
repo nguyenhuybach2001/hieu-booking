@@ -1,5 +1,6 @@
 import React from "react";
 import { footer } from "./config";
+import { Image } from "antd";
 
 export default function Footer() {
   return (
@@ -19,18 +20,61 @@ export default function Footer() {
         </div>
         <div className="col-span-2 w-full">
           <div className="flex items-center">
-            <img loading="lazy" decoding="async" src="/images/location.webp" alt="" className="w-[40px] h-[40px]"/> 2972 Westheimer RD.Santa
-            Ana, Illinois 85486
+            <Image
+              loading="lazy"
+              decoding="async"
+              src="/images/location.webp"
+              alt=""
+              className="w-[40px] h-[40px]"
+            />{" "}
+            2972 Westheimer RD.Santa Ana, Illinois 85486
           </div>
           <div className="flex items-center mt-10">
-          <img loading="lazy" decoding="async" src="/images/phone.webp" alt="" className="w-[35px] h-[35px]"/> (303) 555-0105
+            <Image
+              loading="lazy"
+              decoding="async"
+              src="/images/phone.webp"
+              alt=""
+              className="w-[35px] h-[35px]"
+            />{" "}
+            (303) 555-0105
           </div>
           <div className="flex items-center mt-10 gap-5">
-          <img loading="lazy" decoding="async" src="/images/twitter.webp" alt="" className="w-[40px] h-[40px]"/>
-          <img loading="lazy" decoding="async" src="/images/facebook.webp" alt="" className="w-[40px] h-[40px]"/>
-          <img loading="lazy" decoding="async" src="/images/message.webp" alt="" className="w-[40px] h-[40px]"/>
-          <img loading="lazy" decoding="async" src="/images/linkedin.webp" alt="" className="w-[40px] h-[40px]"/>
-          <img loading="lazy" decoding="async" src="/images/youtube.webp" alt="" className="w-[40px] h-[30px]"/>
+            <Image
+              loading="lazy"
+              decoding="async"
+              src="/images/twitter.webp"
+              alt=""
+              className="w-[40px] h-[40px]"
+            />
+            <Image
+              loading="lazy"
+              decoding="async"
+              src="/images/facebook.webp"
+              alt=""
+              className="w-[40px] h-[40px]"
+            />
+            <Image
+              loading="lazy"
+              decoding="async"
+              src="/images/message.webp"
+              alt=""
+              className="w-[40px] h-[40px]"
+            />
+            <Image
+              loading="lazy"
+              decoding="async"
+              src="/images/linkedin.webp"
+              alt=""
+              className="w-[40px] h-[40px]"
+            />
+            <Image
+              loading="lazy"
+              decoding="async"
+              src="/images/youtube.webp"
+              alt=""
+              className="w-[40px] h-[30px]"
+            />
           </div>
         </div>
       </div>

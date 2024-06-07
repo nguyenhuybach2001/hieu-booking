@@ -1,4 +1,5 @@
 import { DownOutlined } from "@ant-design/icons";
+import { Image } from "antd";
 import React from "react";
 
 export default function DiscoverPage() {
@@ -23,7 +24,7 @@ export default function DiscoverPage() {
 
           <div className="grid grid-cols-3 gap-x-10 mt-5">
             <div className="bg-white">
-              <img
+              <Image
                 src="/images/rectangle8.webp"
                 alt=""
                 className="border border-slate-300 w-full"
@@ -38,7 +39,7 @@ export default function DiscoverPage() {
               </div>
             </div>
             <div className="bg-white">
-              <img
+              <Image
                 src="/images/rectangle7.webp"
                 alt=""
                 className="border border-slate-300 w-full"
@@ -53,7 +54,7 @@ export default function DiscoverPage() {
               </div>
             </div>
             <div className="bg-white">
-              <img
+              <Image
                 src="/images/rectangle8.webp"
                 alt=""
                 className="border border-slate-300 w-full"

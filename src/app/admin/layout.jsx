@@ -5,7 +5,7 @@ import {
   MailOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Avatar, Divider, Layout, Menu } from "antd";
+import { Avatar, Divider, Image, Layout, Menu } from "antd";
 import React, { Suspense, useEffect, useState } from "react";
 import "./style.css";
 import Link from "next/link";
@@ -27,7 +27,7 @@ export default function AdminLayout({ children }) {
   const items = [
     {
       key: "1",
-      icon: <img src="/svgs/home.svg" alt="#" />,
+      icon: <Image src="/svgs/home.svg" alt="#" />,
       label: <Link href={"/admin"}>Trang chủ </Link>,
     },
     {
@@ -59,15 +59,7 @@ export default function AdminLayout({ children }) {
           height: "100vh",
         }}
       >
-        <Header
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <div className="demo-logo" />
-        </Header>
-        <Layout className="px-12 pt-3 pb-16 gap-8">
+        <Layout className="p-12 gap-8">
           <Sider
             width={200}
             style={{
@@ -94,19 +86,19 @@ export default function AdminLayout({ children }) {
             />
             <Divider className="my-3 " />
             <div className="m-1 px-4">
-              <p className=" flex active:scale-105 gap-3 cursor-pointer py-3">
-                <img src="/svgs/setting.svg" /> Cài đặt
-              </p>
-              <p className=" flex active:scale-105 gap-3 cursor-pointer py-3">
-                <img src="/svgs/person.svg" /> Người dùng
-              </p>
-              <p className=" flex active:scale-105 gap-3 cursor-pointer py-3">
-                <img src="/svgs/quit.svg" /> Đăng xuất
-              </p>
+              <div className=" flex active:scale-105 gap-3 cursor-pointer py-3">
+                <Image src="/svgs/setting.svg" alt="#" /> Cài đặt
+              </div>
+              <div className=" flex active:scale-105 gap-3 cursor-pointer py-3">
+                <Image src="/svgs/person.svg" alt="#" /> Người dùng
+              </div>
+              <div className=" flex active:scale-105 gap-3 cursor-pointer py-3">
+                <Image src="/svgs/quit.svg" alt="#" /> Đăng xuất
+              </div>
             </div>
           </Sider>
           <Layout
-            className="overflow-auto"
+            className="overflow-auto overflow-x-hidden"
             style={{
               margin: "24px 50px 0 50px",
             }}

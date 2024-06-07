@@ -1,8 +1,9 @@
 "use client";
-import { Button, Space, Table } from "antd";
-import React from "react";
+import { Button, Modal, Space, Table } from "antd";
+import React, { useState } from "react";
 
 export default function Car() {
+  const [isOpen, setIsOpen] = useState(false);
   const columns = [
     {
       title: "Biển số",
@@ -39,11 +40,12 @@ export default function Car() {
     <div>
       <div className="flex justify-between items-center mb-10">
         <p className="text-xl font-bold">Danh sách xe</p>
-        <Button type="primary" className="h-11 w-20">
+        <Button type="primary" className="h-11 w-20" >
           Thêm
         </Button>
       </div>
       <Table columns={columns} />
+      <Modal></Modal>
     </div>
   );
 }

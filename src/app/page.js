@@ -35,7 +35,7 @@ export default function Home() {
           </div>
           <hr className="max-w-4xl mx-auto h-1 bg-stone-700 my-10" />
           <div>
-            <div className="font-medium text-3xl flex gap-2 mb-5">
+            <div id="tuyen_duong" className="font-medium text-3xl flex gap-2 mb-5">
               Các tuyến phổ biến <RightOutlined className="text-2xl" />
             </div>
             <div className="grid grid-cols-4 gap-x-10 gap-y-5 pb-16">

@@ -73,7 +73,6 @@ export default function AdminLayout({ children }) {
                 <p className="font-bold">test</p>
                 <p>test</p>
               </div>
-              <div>dd</div>
             </div>
             <Menu
               mode="inline"

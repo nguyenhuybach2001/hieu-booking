@@ -5,6 +5,7 @@ import React, { useState } from "react";
 export default function Route() {
   const [isModal, setIsModal] = useState({ isOpen: false, mode: "" });
   const [routeId, setRouteId] = useState(null);
+  const [form] = Form.useForm();
   const columns = [
     {
       title: "Tên tuyến đường",
@@ -39,6 +40,7 @@ export default function Route() {
           onClick={() => {
             setIsModal({ isOpen: true, mode: "edit" });
             setRouteId(record.id);
+            form.setFieldsValue(record);
           }}
           type="primary"
           className="bg-[#F2994A]"
@@ -48,7 +50,7 @@ export default function Route() {
       ),
     },
   ];
-  const dataSource = [
+  const [dataSource, setDataSource] = useState([
     {
       id: 1,
       name: "1",
@@ -59,7 +61,26 @@ export default function Route() {
     },
     { id: 2, name: "2", start: "Mike", end: "mi", gap: 32, time: 32323 },
     { id: 3, name: "3", start: "Mai", end: "mi", gap: 32, time: 32323 },
-  ];
+  ]);
+  const handleFormSubmit = (values) => {
+    if (isModal.mode === "create") {
+      const newRoute = {
+        ...values,
+        id: dataSource.length
+          ? Math.max(...dataSource.map((route) => route.id)) + 1
+          : 1,
+      };
+      setDataSource([...dataSource, newRoute]);
+    } else {
+      setDataSource(
+        dataSource.map((route) =>
+          route.id === routeId ? { ...route, ...values } : route
+        )
+      );
+    }
+    setIsModal({ isOpen: false, mode: "" });
+    form.resetFields();
+  };
   return (
     <div>
       <div className="flex justify-between items-center mb-10">
@@ -89,7 +110,7 @@ export default function Route() {
         }}
         footer={false}
       >
-        <Form layout="vertical">
+        <Form layout="vertical" form={form} onFinish={handleFormSubmit}>
           <Form.Item
             label="Tên tuyến đường"
             name="name"
@@ -132,7 +153,17 @@ export default function Route() {
             </Form.Item>
           </div>
           <Form.Item className="flex justify-end">
-            <Button className="h-12 mr-5 w-32"> Hủy</Button>
+            <Button
+              className="h-12 mr-5 w-32"
+              onClick={() => {
+                setIsModal({ isOpen: false, mode: "" });
+                form.resetFields();
+                setRouteId(null);
+              }}
+            >
+              {" "}
+              Hủy
+            </Button>
             <Button className="h-12 w-32" type="primary" htmlType="submit">
               Lưu
             </Button>

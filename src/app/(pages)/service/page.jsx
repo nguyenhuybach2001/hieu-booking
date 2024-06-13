@@ -1,5 +1,3 @@
-import Place from "@/components/place";
-import { places } from "@/components/place/config";
 import React from "react";
 import { services } from "./config";
 import { Image } from "antd";
@@ -26,16 +24,17 @@ export default function ServicePage() {
             nhu cầu của quý khách.
           </p>
           {services.map((service, i) => (
-            <div key={i} className="flex justify-between gap-10 mb-10">
-              <Image
-                src={service.image}
-                style={{ order: i % 2 === 1 ? 1 : 2 }}
-                alt=""
-                loading="lazy"
-                decoding="async"
-              />
+            <div key={i} className="grid grid-cols-3 gap-10 mb-10">
+              <div style={{ order: i % 2 === 1 ? 1 : 2 }} className="col-span-2">
+                <Image
+                  src={service.image}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
               <div style={{ order: i % 2 === 1 ? 2 : 1 }}>
-                <p className='font-bold text-2xl mb-5'>{service.title}</p>
+                <p className="font-bold text-2xl mb-5">{service.title}</p>
                 <p>{service.content}</p>
               </div>
             </div>

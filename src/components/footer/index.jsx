@@ -1,6 +1,7 @@
 import React from "react";
 import { footer } from "./config";
 import { Image } from "antd";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -11,9 +12,11 @@ export default function Footer() {
             <div key={i}>
               <p className="font-bold">{item.title}</p>
               {item.contents.map((content, index) => (
-                <p key={index} className="mt-5">
-                  {content.subtitle}
-                </p>
+                <div key={index} className="mt-5">
+                  <Link href={content.url} >
+                    {content.subtitle}
+                  </Link>
+                </div>
               ))}
             </div>
           ))}

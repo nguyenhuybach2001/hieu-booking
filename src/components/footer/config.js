@@ -4,7 +4,7 @@ export const footer = [
     contents: [
         { 
             subtitle: "Home", 
-            url: "" 
+            url: "/" 
         },
         { 
             subtitle: "Tuyến đường", 
@@ -12,15 +12,15 @@ export const footer = [
         },
         { 
             subtitle: "Khám phá", 
-            url: "" 
+            url: "/discover" 
         },
         { 
             subtitle: "Dịch vụ", 
-            url: "" 
+            url: "service" 
         },
         { 
             subtitle: "Về chúng tôi", 
-            url: "" 
+            url: "about_us" 
         }
     ]
   },
@@ -29,23 +29,23 @@ export const footer = [
     contents: [
         { 
             subtitle: "Hà Nội", 
-            url: "" 
+            url: "/discover/Ha_Noi" 
         },
         { 
             subtitle: "Điện Biên", 
-            url: "" 
+            url: "/discover/Dien_Bien" 
         },
         { 
             subtitle: "Sơn La", 
-            url: "" 
+            url: "/discover/Son_La" 
         },
         { 
             subtitle: "Hải Phòng", 
-            url: "" 
+            url: "/discover/Hai_Phong" 
         },
         { 
             subtitle: "Đà Lạt", 
-            url: "" 
+            url: "/discover/Da_Lat" 
         }
     ]
   },
@@ -54,19 +54,19 @@ export const footer = [
     contents: [
         { 
             subtitle: "Trung tâm trợ giúp", 
-            url: "" 
+            url: "/support" 
         },
         { 
             subtitle: "Chính sách bảo mật", 
-            url: "" 
+            url: "/support" 
         },
         { 
             subtitle: "Chính sách về giá", 
-            url: "" 
+            url: "/support" 
         },
         { 
             subtitle: "Chính sách và quy trình giải quyết khiếu nại", 
-            url: "" 
+            url: "/support" 
         },
     ]
   },

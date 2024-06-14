@@ -30,7 +30,7 @@ export default function Header() {
             </Link>
             <Button
               onClick={() => {
-                router.push("/sign-in");
+                router.push("/sign- in");
               }}
               className="text-blue-400"
             >

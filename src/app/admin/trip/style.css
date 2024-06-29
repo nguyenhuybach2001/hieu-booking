@@ -1,0 +1,22 @@
+.custom2 {
+  .ant-select-selector {
+    color: white !important;
+    background-color: #f2994a !important;
+    border-radius: 24px !important;
+    border: none !important;
+  }
+  .ant-select-arrow {
+    color: white !important;
+  }
+}
+.custom1 {
+  .ant-select-selector {
+    color: white !important;
+    background-color: #2F80ED !important;
+    border-radius: 24px !important;
+    border: none !important;
+  }
+  .ant-select-arrow {
+    color: white !important;
+  }
+}

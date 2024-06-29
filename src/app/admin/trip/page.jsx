@@ -2,6 +2,7 @@
 import { Button, Form, Input, Modal, Select, Space, Table } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
+import "./style.css";
 
 export default function Trip() {
   const [form] = Form.useForm();
@@ -107,7 +108,9 @@ export default function Trip() {
             </p>
           ) : (
             <Select
-              className="w-full"
+              className={`w-full ${
+                record.status === 3 ? "custom1" : "custom2"
+              } `}
               onChange={(e) => {
                 setDataSource(
                   dataSource.map((route) =>
@@ -174,6 +177,7 @@ export default function Trip() {
         </Button>
       </div>
       <Table
+        scroll={{ x: 900 }}
         onRow={(record, rowIndex) => {
           return {
             onClick: () => {

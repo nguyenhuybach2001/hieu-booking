@@ -9,7 +9,7 @@ import { Avatar, Divider, Image, Layout, Menu } from "antd";
 import React, { Suspense, useEffect, useState } from "react";
 import "./style.css";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { adminMap } from "@/config/AdminMap";
 import Loading from "../loading";
 
@@ -20,7 +20,7 @@ export default function AdminLayout({ children }) {
   const handleSelect = (e) => {
     setSelected(e.key);
   };
-
+  const router = useRouter();
   useEffect(() => {
     setSelected(adminMap[path]);
   }, [path]);
@@ -91,7 +91,12 @@ export default function AdminLayout({ children }) {
               <div className=" flex active:scale-105 gap-3 cursor-pointer py-3">
                 <Image src="/svgs/person.svg" alt="#" /> Người dùng
               </div>
-              <div className=" flex active:scale-105 gap-3 cursor-pointer py-3">
+              <div
+                className=" flex active:scale-105 gap-3 cursor-pointer py-3"
+                onClick={() => {
+                  router.push("/");
+                }}
+              >
                 <Image src="/svgs/quit.svg" alt="#" /> Đăng xuất
               </div>
             </div>

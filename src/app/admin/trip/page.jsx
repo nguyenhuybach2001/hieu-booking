@@ -1,5 +1,5 @@
 "use client";
-import { Button, Form, Input, Modal, Space, Table } from "antd";
+import { Button, Form, Input, Modal, Select, Space, Table } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -15,11 +15,32 @@ export default function Trip() {
       start_time: "Meo",
       trip: "mi",
       route: 32,
-      status: 32323,
+      status: 1,
       diem_den: "dd",
       diem_di: "dssdss",
     },
   ]);
+  const items1 = [
+    {
+      value: 1,
+      label: "Chưa xuất bến",
+    },
+    {
+      value: 2,
+      label: "Hủy chuyến",
+    },
+    {
+      value: 3,
+      label: "Đang di chuyển",
+    },
+  ];
+  const items2 = [
+    { value: 3, label: "Đang di chuyển" },
+    {
+      value: 4,
+      label: "Hoàn thành",
+    },
+  ];
   const dataTable = dataSource.map((val) => {
     return {
       id: val.id,
@@ -29,7 +50,7 @@ export default function Trip() {
       trip: val.trip,
       route: val.route,
       status: val.status,
-      address: val.diem_di  + "-" + val.diem_den,
+      address: val.diem_di + "-" + val.diem_den,
     };
   });
   console.log(dataTable);
@@ -66,14 +87,47 @@ export default function Trip() {
     },
     {
       title: "Trạng thái",
-      dataIndex: "status",
       key: "status",
+      align: "center",
+      width: 150,
+      render: (_, record) => (
+        <div
+          className="flex justify-center"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          {record.status === 4 ? (
+            <p className="text-white bg-[#27AE60] w-fit p-2 rounded-3xl">
+              Hoàn thành
+            </p>
+          ) : record.status === 2 ? (
+            <p className="w-fit p-2 rounded-3xl border border-solid border-[#4F4F4F]">
+              Đã hủy
+            </p>
+          ) : (
+            <Select
+              className="w-full"
+              onChange={(e) => {
+                setDataSource(
+                  dataSource.map((route) =>
+                    route.id === record.id ? { ...route, status: e } : route
+                  )
+                );
+              }}
+              defaultValue={record.status}
+              options={record.status === 3 ? items2 : items1}
+            />
+          )}
+        </div>
+      ),
     },
     {
       title: "",
       render: (_, record) => (
         <div
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             setIsModal({ isOpen: true, mode: "edit" });
             setTripId(record.id);
             form.setFieldsValue(record);

@@ -10,7 +10,7 @@ export default function SignIn() {
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
   const onFinish1 = (values) => {
-    if (values.sđt === "0919727188") {
+    if (values.sđt === "BinfordAdmin") {
       setStep(2);
       form1.resetFields();
       setSđt(values.sđt);
@@ -18,20 +18,20 @@ export default function SignIn() {
       form1.setFields([
         {
           name: "sđt",
-          errors: ["Số điện thoại không đúng"],
+          errors: ["Tên đăng nhập không đúng"],
         },
       ]);
     }
   };
   const onFinish2 = (values) => {
-    if (values.cmnd === "040201000146") {
+    if (values.cmnd === "Admin123!@#") {
       form2.resetFields();
-      router.push("/host");
+      router.push("/admin");
     } else {
       form1.setFields([
         {
           name: "cmnd",
-          errors: ["CMND không đúng"],
+          errors: ["Mật khẩu không đúng"],
         },
       ]);
     }
@@ -58,18 +58,14 @@ export default function SignIn() {
                     form={form1}
                     onFinish={onFinish1}
                   >
-                    <p className="font-bold">Điền số điện thoại để đăng nhập</p>
+                    <p className="text-left font-bold">Điền tên đăng nhập</p>
                     <Form.Item
                       name={"sđt"}
                       className="my-6"
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng nhập số điện thoại",
-                        },
-                        {
-                          pattern: /^\d+$/,
-                          message: "Chỉ được phép nhập số",
+                          message: "Vui lòng nhập tên đăng nhập",
                         },
                       ]}
                     >
@@ -80,7 +76,7 @@ export default function SignIn() {
                       type="primary"
                       htmlType="submit"
                     >
-                      Tiếp tục{" "}
+                      Tiếp tục
                     </Button>
                   </Form>
                 );
@@ -92,19 +88,15 @@ export default function SignIn() {
                     form={form2}
                     onFinish={onFinish2}
                   >
-                    <p className="font-bold">{sđt}</p>
+                    <p className="font-bold">Binford Co.</p>
                     <Form.Item
                       name={"cmnd"}
                       className="my-6"
-                      label="CMND"
+                      label="Mật khẩu"
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng nhập số điện thoại",
-                        },
-                        {
-                          pattern: /^\d+$/,
-                          message: "Chỉ được phép nhập số",
+                          message: "Vui lòng nhập mật khẩu",
                         },
                       ]}
                     >

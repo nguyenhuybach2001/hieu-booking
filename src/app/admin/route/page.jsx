@@ -1,36 +1,82 @@
 "use client";
-import { Button, Form, Input, Modal, Table } from "antd";
-import React, { useState } from "react";
+import apiCaller from "@/api/apiCaller";
+import { localApi } from "@/api/localApi";
+import { routeApi } from "@/api/routeApi";
+import { Button, Form, Input, Modal, Select, Table } from "antd";
+import React, { useEffect, useState } from "react";
+
+function getNameById(id, data) {
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].id === id) {
+      return data[i].name;
+    }
+  }
+  return null; // Return null if no matching id is found
+}
 
 export default function Route() {
   const [isModal, setIsModal] = useState({ isOpen: false, mode: "" });
   const [routeId, setRouteId] = useState(null);
+  const [dataRoutes, setDataRoutes] = useState([])
+  const [dataLocals, setDataLocals] = useState([])
   const [form] = Form.useForm();
+  const errorHandler = (error) => {
+    console.log("Fail: ", error);
+  };
+
+  const getAllRoute = async () => {
+    const res = await apiCaller({
+      request: routeApi.getAllRoutes(),
+      errorHandler,
+    });
+    if (res) {
+      setDataRoutes(res.data)
+      console.log(res.data)
+    }
+  };
+  const getLocationTreeByCondition = async () => {
+    const data = {
+      status: 1
+    }
+    const res = await apiCaller({
+      request: localApi.getLocationTreeByCondition(data),
+      errorHandler,
+    });
+    if (res) {
+      setDataLocals(res.data)
+    }
+  };
+  useEffect(() => {
+    getAllRoute()
+    getLocationTreeByCondition()
+  }, [])
   const columns = [
     {
       title: "Tên tuyến đường",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "tenTuyenDuong",
+      key: "tenTuyenDuong",
     },
     {
       title: "Điểm A",
-      dataIndex: "start",
-      key: "start",
+      dataIndex: "diemDungA",
+      key: "diemDungA",
+      render: (text) => <p>{getNameById(text, dataLocals)}</p>,
     },
     {
       title: "Điểm B",
-      dataIndex: "end",
-      key: "end",
+      dataIndex: "diemDungB",
+      key: "diemDungB",
+      render: (text) => <p>{getNameById(text, dataLocals)}</p>,
     },
     {
       title: "Khoảng cách (km)",
-      dataIndex: "gap",
-      key: "gap",
+      dataIndex: "khoangCach",
+      key: "khoangCach",
     },
     {
       title: "Thời gian di chuyển",
-      dataIndex: "time",
-      key: "time",
+      dataIndex: "thoiGianDiChuyen",
+      key: "thoiGianDiChuyen",
     },
     {
       title: "",
@@ -39,7 +85,7 @@ export default function Route() {
         <Button
           onClick={() => {
             setIsModal({ isOpen: true, mode: "edit" });
-            setRouteId(record.id);
+            setRouteId(record.tuyenDuongID);
             form.setFieldsValue(record);
           }}
           type="primary"
@@ -50,38 +96,37 @@ export default function Route() {
       ),
     },
   ];
-  
-  const [dataSource, setDataSource] = useState([
-    {
-      id: 1,
-      name: "1",
-      start: "Meo",
-      end: "mi",
-      gap: 32,
-      time: 32323,
-    },
-    { id: 2, name: "2", start: "Mike", end: "mi", gap: 32, time: 32323 },
-    { id: 3, name: "3", start: "Mai", end: "mi", gap: 32, time: 32323 },
-  ]);
-  const handleFormSubmit = (values) => {
-    if (isModal.mode === "create") {
-      const newRoute = {
-        ...values,
-        id: dataSource.length
-          ? Math.max(...dataSource.map((route) => route.id)) + 1
-          : 1,
-      };
-      setDataSource([...dataSource, newRoute]);
-    } else {
-      setDataSource(
-        dataSource.map((route) =>
-          route.id === routeId ? { ...route, ...values } : route
-        )
-      );
+  const handleFormSubmit = async (values) => {
+    const data = {
+      "tenTuyenDuong": values.tenTuyenDuong,
+      "khoangCach": values.khoangCach,
+      "thoiGianDiChuyen": values.thoiGianDiChuyen,
+      "diemDungA": values.diemDungA,
+      "diemDungB": values.diemDungB
     }
-    setIsModal({ isOpen: false, mode: "" });
-    form.resetFields();
+    const data1 = {
+      tuyenDuongID: routeId,
+      tenTuyenDuong: values.tenTuyenDuong,
+      khoangCach: values.khoangCach,
+      thoiGianDiChuyen: values.thoiGianDiChuyen,
+      diemDungA: values.diemDungA,
+      diemDungB: values.diemDungB
+    }
+    const res = await apiCaller({
+      request: isModal.mode === "edit" ? routeApi.updateRoute(data1) : routeApi.createRoute(data),
+      errorHandler,
+    });
+    if (res) {
+      getAllRoute()
+      setIsModal({ isOpen: false, mode: "" });
+      form.resetFields();
+    }
   };
+
+  const result = dataLocals.map(item => ({
+    value: item.id,
+    label: item.name
+  }));
   return (
     <div>
       <div className="flex justify-between items-center mb-10">
@@ -91,6 +136,7 @@ export default function Route() {
         <Button
           onClick={() => {
             setIsModal({ isOpen: true, mode: "create" });
+            form.resetFields()
           }}
           type="primary"
           className="h-11"
@@ -98,7 +144,7 @@ export default function Route() {
           Thêm tuyến đường
         </Button>
       </div>
-      <Table dataSource={dataSource} columns={columns} />
+      <Table dataSource={dataRoutes} columns={columns} />
       <Modal
         title={
           isModal.mode === "edit"
@@ -108,13 +154,14 @@ export default function Route() {
         open={isModal.isOpen}
         onCancel={() => {
           setIsModal({ isOpen: false, mode: "" });
+          form.resetFields()
         }}
         footer={false}
       >
         <Form layout="vertical" form={form} onFinish={handleFormSubmit}>
           <Form.Item
             label="Tên tuyến đường"
-            name="name"
+            name="tenTuyenDuong"
             rules={[
               { required: true, message: "Vui lòng nhập tên tuyến đường" },
             ]}
@@ -124,31 +171,44 @@ export default function Route() {
           <div className="grid grid-cols-2 gap-8">
             <Form.Item
               label="Điểm A"
-              name="start"
+              name="diemDungA"
               rules={[{ required: true, message: "Vui lòng nhập điểm A" }]}
             >
-              <Input className={"h-12"} type="text" />
+              <Select
+                placeholder="Chọn địa điểm"
+                className="w-full h-[56px] "
+                allowClear
+                options={result}
+              />
             </Form.Item>
             <Form.Item
               label="Điểm B"
-              name="end"
+              name="diemDungB"
               rules={[{ required: true, message: "Vui lòng nhập điểm B" }]}
             >
-              <Input className={"h-12"} type="text" />
+              <Select
+                placeholder="Chọn địa điểm"
+                className="w-full h-[56px] "
+                allowClear
+                options={result}
+              />
             </Form.Item>
           </div>
           <div className="grid grid-cols-2 gap-8">
             <Form.Item
               label="Khoảng cách (km)"
-              name="gap"
-              rules={[{ required: true, message: "Vui lòng nhập điểm A" }]}
+              name="khoangCach"
+              rules={[{ required: true, message: "Vui lòng nhập khoảng cách" }, {
+                pattern: /^\d+$/,
+                message: "Chỉ được phép nhập số",
+              },]}
             >
               <Input className={"h-12"} type="text" />
             </Form.Item>
             <Form.Item
               label="Thời gian di chuyển"
-              name="time"
-              rules={[{ required: true, message: "Vui lòng nhập điểm B" }]}
+              name="thoiGianDiChuyen"
+              rules={[{ required: true, message: "Vui lòng nhập thời gian di chuyển" }]}
             >
               <Input className={"h-12"} type="text" />
             </Form.Item>

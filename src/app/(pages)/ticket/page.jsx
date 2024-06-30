@@ -38,8 +38,7 @@ export default function Ticket() {
                 <p className="text-5xl">19:30</p>
               </div>
               <div className="flex w-full items-end">
-                <Image
-                  loading="lazy"
+                <img loading="lazy"
                   decoding="async"
                   src="/images/iconTime.webp"
                 />
@@ -113,23 +112,23 @@ export default function Ticket() {
         </div>
       </div>
       <Modal
-          title={
-            <div className="flex gap-2 items-center text-lg font-bold">
-              <Image src="/images/ask.webp" alt="" className="w-5 h-5" /> Xác nhận hủy vé
-            </div>
-          }
-          open={open}
-          onOk={handleCancelTicket}
-          onCancel={handleBack}
-          okText="Hủy vé"
-          cancelText="Trở về"
-        >
-          <p>
-            Vé của bạn đã được ghi nhận vào hệ thống. Bạn sẽ sớm nhận được thông
-            báo xác nhận từ phía nhà xe. Nếu bạn có bất kỳ câu hỏi nào, vui lòng
-            liên hệ với bộ phận chăm sóc khách hàng
-          </p>
-        </Modal>
+        title={
+          <div className="flex gap-2 items-center text-lg font-bold">
+            <img src="/images/ask.webp" alt="" className="w-5 h-5" /> Xác nhận hủy vé
+          </div>
+        }
+        open={open}
+        onOk={handleCancelTicket}
+        onCancel={handleBack}
+        okText="Hủy vé"
+        cancelText="Trở về"
+      >
+        <p>
+          Vé của bạn đã được ghi nhận vào hệ thống. Bạn sẽ sớm nhận được thông
+          báo xác nhận từ phía nhà xe. Nếu bạn có bất kỳ câu hỏi nào, vui lòng
+          liên hệ với bộ phận chăm sóc khách hàng
+        </p>
+      </Modal>
     </div>
   );
 }

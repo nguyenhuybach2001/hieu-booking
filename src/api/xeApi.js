@@ -2,20 +2,20 @@ import { ENDPOINTS } from "@/config/endpoint";
 import axiosClient from "./axiosClient";
 
 export const xeApi = {
-  getDetailHostByHostId: () => () => {
-    return axiosClient.post(ENDPOINTS.GET_DETAIL_HOST);
+
+  createVehicle: (data) => () => {
+    return axiosClient.post(ENDPOINTS.ADD_XE, data);
   },
 
-  createXe: () => () => {
-    return axiosClient.post(ENDPOINTS.CREATE_HOST);
+  updateVehicle: (data) => () => {
+    return axiosClient.post(ENDPOINTS.UPDATE_XE, data);
   },
-  updateRoom: () => (data) => {
-    return axiosClient.post(ENDPOINTS.UPDATE_ROOM, data);
+
+  deleteVehicle: (data) => () => {
+    return axiosClient.post(ENDPOINTS.DELETE_XE, data);
   },
-  getRoomByHostId: () => () => {
-    return axiosClient.get(ENDPOINTS.GET_ROOM_BY_HOST_ID);
-  },
-  addRoom: () => (data) => {
-    return axiosClient.post(ENDPOINTS.ADD_ROOM, data);
+
+  getAllVehicles: () => () => {
+    return axiosClient.post(ENDPOINTS.GET_ALL_XE);
   },
 };

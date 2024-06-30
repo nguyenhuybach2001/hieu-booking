@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 export default function Trip(props) {
   const router = useRouter();
   const dispatch = useDispatch();
+
+  
   return (
     <div className="grid grid-cols-12 bg-white mb-5 rounded-xl">
       <div className="col-span-6 grid gap-3 grid-cols-12">
@@ -64,6 +66,7 @@ export default function Trip(props) {
       <Link
         href={"/fill-infomation"}
         className="col-span-2 border-[2px] border-slate-200 rounded-2xl m-2"
+        onClick={() => dispatch(addTripId(props.id))}
       >
         <div className="w-max mx-auto mt-5">Còn {props.blank} chỗ trống </div>
         <div className="w-max mx-auto mt-10 text-4xl font-medium">

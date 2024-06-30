@@ -33,21 +33,14 @@ export default function Info() {
 
   const handleOk = () => {
     setIsModalOpen(false);
-    setIsModalCompleteOpen(true);
+    router.push("/ticket");
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
-  const handleOkComplete = () => {
-    setIsModalCompleteOpen(false);
-    router.push("/ticket");
-  };
 
-  const handleCancelComplete = () => {
-    router.push("/");
-  };
   const handleCheck = (id) => {
     setChecked(id);
   };
@@ -325,25 +318,6 @@ export default function Info() {
         >
           <p>Vui lòng kiểm tra kỹ thông tin trên trước khi xác nhận</p>
           <p>Sau khi xác nhận, bạn không thể thay đổi thông tin</p>
-        </Modal>
-        <Modal
-          title={
-            <div className="flex gap-2 items-center text-lg font-bold text-green-600">
-              <Image src="/images/tick.webp" alt="" className="w-5 h-5" /> Hoàn
-              thành
-            </div>
-          }
-          open={isModalCompleteOpen}
-          onOk={handleOkComplete}
-          onCancel={handleCancelComplete}
-          okText="Xem vé xe"
-          cancelText="Trở về trang chủ"
-        >
-          <p>
-            Vé của bạn đã được ghi nhận vào hệ thống. Bạn sẽ sớm nhận được thông
-            báo xác nhận từ phía nhà xe. Nếu bạn có bất kỳ câu hỏi nào, vui lòng
-            liên hệ với bộ phận chăm sóc khách hàng
-          </p>
         </Modal>
       </div>
     </div>

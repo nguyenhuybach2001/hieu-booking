@@ -1,15 +1,21 @@
 "use client";
 import Search from "@/components/search";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { options } from "./config";
 import Trip from "@/components/trip";
 import { Button, Modal, Timeline } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { addTripId, handleModal } from "@/lib/features/searchSlices";
+import apiCaller from "@/api/apiCaller";
+import { localApi } from "@/api/localApi";
 
 export default function SearchPage() {
   const dispatch = useDispatch();
   const tripId = useSelector((state) => state.search.tripId);
+  const searchInfo = useSelector((state) => state.search.searchInfo);
+  const [dataLocals, setDataLocals] = useState([])
+  const [local, setLocal] = useState([])
+  const dataTrip = useSelector((state) => state.search.dataTrip);
   const getCurrentDate = () => {
     const currentDate = new Date();
     const day = currentDate.getDate();
@@ -17,6 +23,39 @@ export default function SearchPage() {
     const year = currentDate.getFullYear();
     return `${day}-${month}-${year}`;
   };
+
+  const errorHandler = (error) => {
+    console.log("Fail: ", error);
+  };
+  const getTreeLocation = async () => {
+    const data = {
+      status: 1
+    }
+    const res = await apiCaller({
+      request: localApi.getTreeLocation(data),
+      errorHandler,
+    });
+    if (res) {
+      setLocal(res.data)
+    }
+  };
+  const getLocationTreeByCondition = async () => {
+    const data = {
+      status: 1
+    }
+    const res = await apiCaller({
+      request: localApi.getLocationTreeByCondition(data),
+      errorHandler,
+    });
+    if (res) {
+      setDataLocals(res.data)
+    }
+  };
+  useEffect(() => {
+    getLocationTreeByCondition()
+    getTreeLocation()
+  }, [])
+  console.log(dataTrip,searchInfo)
   const currentDate = getCurrentDate();
   const modalDetail = useSelector((state) => state.search.modalDetail);
   return (
@@ -25,8 +64,8 @@ export default function SearchPage() {
         <div className="text-xl font-medium mt-10">{currentDate}</div>
         <p className="text-3xl mt-5 mb-10">
           Chuyến đi từ{" "}
-          <span className="text-blue-500 font-bold">Điện Biên</span>
-          <br /> tới <span className="text-blue-500 font-bold">Hà Nội</span>
+          <span className="text-blue-500 font-bold">{local.find((item) => item.id === searchInfo.idDiemDi)?.name}</span>
+          <br /> tới <span className="text-blue-500 font-bold">{local.find((item) => item.id === searchInfo.idDiemDen)?.name}</span>
         </p>
         <Search />
         <div className="max-w-4xl w-full grid grid-cols-5 my-10 items-center">
@@ -45,19 +84,25 @@ export default function SearchPage() {
           </div>
         </div>
         <div>
-          {options.map((option, i) => (
+          {dataTrip.map((option, i) => (
             <div key={i}>
               <Trip
-                id={i}
-                vehicle={option.vehicle}
-                departure={option.departure}
-                destination={option.destination}
-                timeStart={option.timeStart}
-                timeEnd={option.timeEnd}
-                title={option.title}
-                content={option.content}
-                blank={option.blank}
-                price={option.price}
+                id={option.chuyenId}
+                vehicle="Economic"
+                departure={dataLocals.find((item) => item.id === option.idDiemDi)?.name}
+                destination={dataLocals.find((item) => item.id === option.idDiemDen)?.name}
+                timeStart="19:30"
+                timeEnd="06:00"
+                title="Giường nằm 4X chỗ với:"
+                content={[
+                  "Nước đóng chai miễn phí",
+                  "Wifi miễn phí",
+                  "Cổng sạc USB",
+                  "Bảo hiểm du lịch",
+                  "Phòng chờ VIP",
+                ]}
+                blank={option.gheConTrong}
+                price={option.giaVe}
               />
             </div>
           ))}
@@ -68,40 +113,39 @@ export default function SearchPage() {
         open={modalDetail}
         onCancel={() => {
           dispatch(handleModal(false));
-          dispatch(addTripId(null));
         }}
         footer={null}
       >
         <p className="font-bold text-lg">
-          {options[tripId]?.departure} - {options[tripId]?.destination}
+        {dataLocals.find((item) => item.id ===dataTrip[tripId]?.idDiemDi)?.name} -  {dataLocals.find((item) => item.id ===dataTrip[tripId]?.idDiemDen)?.name}
         </p>
         <p className="font-light mb-8">
           Khởi hành vào thứ 4 ngày 8 tháng 5 năm 2024
         </p>
         <div className="flex relative items-center">
-          <p className="absolute font-light top-6"> 7 giờ 30 phút</p>
+          <p className="absolute font-light top-6">{dataTrip[tripId]?.thoiGianDiChuyen}</p>
           <Timeline
             className="w-64"
             mode={"left"}
             items={[
               {
-                label: options[tripId]?.timeStart,
+                label:"19:30",
                 children: (
                   <div>
                     <p>Hà Nội</p>
                     <p className="text-sm font-light">
-                      {options[tripId]?.departure}
+                      {dataLocals.find((item) => item.id ===dataTrip[tripId]?.idDiemDi)?.name}
                     </p>
                   </div>
                 ),
               },
               {
-                label: options[tripId]?.timeEnd,
+                label: "6:00",
                 children: (
                   <div>
                     <p>Điện Biên</p>
                     <p className="text-sm font-light">
-                      {options[tripId]?.destination}
+                    {dataLocals.find((item) => item.id ===dataTrip[tripId]?.idDiemDen)?.name}
                     </p>
                   </div>
                 ),

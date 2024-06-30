@@ -1,26 +1,89 @@
 "use client";
 import { Button, Form, Input, Modal, Select, Space, Table } from "antd";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
+import apiCaller from "@/api/apiCaller";
+import { tripApi } from "@/api/tripApi";
+import { routeApi } from "@/api/routeApi";
+import { localApi } from "@/api/localApi";
+import { xeApi } from "@/api/xeApi";
 
 export default function Trip() {
   const [form] = Form.useForm();
   const [tripId, setTripId] = useState(null);
   const [isModal, setIsModal] = useState({ isOpen: false, mode: "" });
-  const [dataSource, setDataSource] = useState([
-    {
-      id: 1,
-      bien_xe: "22c1-3333",
-      seat_null: "1",
-      start_time: "Meo",
-      trip: "mi",
-      route: 32,
-      status: 1,
-      diem_den: "dd",
-      diem_di: "dssdss",
-    },
-  ]);
+  const [dataRoutes, setDataRoutes] = useState([])
+  const [dataSource, setDataSource] = useState([]);
+  const [dataLocals, setDataLocals] = useState([])
+  const [dataCar, setDataCar] = useState([])
+
+  const errorHandler = (error) => {
+    console.log("Fail: ", error);
+  };
+  const listTrips = async () => {
+    const res = await apiCaller({
+      request: tripApi.listTrips(),
+      errorHandler,
+    });
+    if (res) {
+      setDataSource(res.data)
+      console.log(res.data)
+    }
+  };
+  const getAllRoute = async () => {
+    const res = await apiCaller({
+      request: routeApi.getAllRoutes(),
+      errorHandler,
+    });
+    if (res) {
+      setDataRoutes(res.data)
+      console.log(res.data)
+    }
+  };
+  const getLocationTreeByCondition = async () => {
+    const data = {
+      status: 1
+    }
+    const res = await apiCaller({
+      request: localApi.getLocationTreeByCondition(data),
+      errorHandler,
+    });
+    if (res) {
+      setDataLocals(res.data)
+    }
+  };
+  const getAllCar = async () => {
+    const res = await apiCaller({
+      request: xeApi.getAllVehicles(),
+      errorHandler,
+    });
+    if (res) {
+      setDataCar(res.data)
+    }
+  };
+  const updateStatusTrip = async (status, chuyenId) => {
+
+    const data = {
+      "chuyenId": chuyenId,
+      "trangThai": status
+    }
+    console.log(data, chuyenId)
+    const res = await apiCaller({
+      request: tripApi.updateStatusTrip(data),
+      errorHandler,
+    });
+    if (res) {
+      console.log(res.data)
+      listTrips()
+    }
+  };
+  useEffect(() => {
+    getAllCar()
+    listTrips()
+    getAllRoute()
+    getLocationTreeByCondition()
+  }, [])
   const items1 = [
     {
       value: 1,
@@ -44,82 +107,87 @@ export default function Trip() {
   ];
   const dataTable = dataSource.map((val) => {
     return {
-      id: val.id,
-      bien_xe: val.bien_xe,
-      seat_null: val.seat_null,
-      start_time: val.start_time,
-      trip: val.trip,
-      route: val.route,
-      status: val.status,
-      address: val.diem_di + "-" + val.diem_den,
+      id: val.chuyenId,
+      xeId: val.xeId,
+      gheConTrong: val.gheConTrong,
+      thoiGianDiChuyen: val.thoiGianDiChuyen,
+      maChuyen: val.maChuyen,
+      tuyenDuongId: val.tuyenDuongId,
+      status: val.trangThai,
+      address: val.idDiemDi + "+" + val.idDiemDen,
     };
   });
-  console.log(dataTable);
+  const getNameFromId = (inputString, data) => {
+    const ids = inputString.split('+');
+    const names = ids.map(id => {
+      const found = data.find(item => item.id === id);
+      return found ? found.name : null;
+    });
+
+    return names.join(' - ');
+  };
+  const getBienSoFromXeId = (id, vehicles) => {
+    const vehicle = vehicles.find(item => item.xeId === id);
+    return vehicle ? vehicle.bienSo : null;
+  };
   const columns = [
     {
       title: "Mã chuyến",
-      dataIndex: "trip",
-      key: "trip",
-    },
-    {
-      title: "Tuyến đường",
-      dataIndex: "route",
-      key: "route",
+      dataIndex: "maChuyen",
+      key: "maChuyen",
     },
     {
       title: "Biển số xe",
-      dataIndex: "bien_xe",
-      key: "bien_xe",
+      dataIndex: "xeId",
+      key: "xeId",
+      render: (text) => <p>{getBienSoFromXeId(text, dataCar)}</p>
     },
     {
       title: "Điểm đi - Điểm đến",
       dataIndex: "address",
       key: "address",
+      render: (text) => <p>{getNameFromId(text, dataLocals)}</p>
     },
     {
       title: "Ghế trống",
-      dataIndex: "seat_null",
-      key: "seat_null",
+      dataIndex: "gheConTrong",
+      key: "gheConTrong",
     },
     {
       title: "Thời gian xuất bến",
-      dataIndex: "start_time",
-      key: "start_time",
+      dataIndex: "thoiGianDiChuyen",
+      key: "thoiGianDiChuyen",
     },
     {
       title: "Trạng thái",
       key: "status",
       align: "center",
       width: 150,
-      render: (_, record) => (
+      dataIndex: "status",
+      render: (text, record) => (
         <div
           className="flex justify-center"
           onClick={(e) => {
             e.stopPropagation();
           }}
         >
-          {record.status === 4 ? (
+          {Number(text) === 4 ? (
             <p className="text-white bg-[#27AE60] w-fit p-2 rounded-3xl">
               Hoàn thành
             </p>
-          ) : record.status === 2 ? (
+          ) : Number(text) === 2 ? (
             <p className="w-fit p-2 rounded-3xl border border-solid border-[#4F4F4F]">
               Đã hủy
             </p>
           ) : (
             <Select
-              className={`w-full ${
-                record.status === 3 ? "custom1" : "custom2"
-              } `}
+              className={`w-full ${Number(text) === 3 ? "custom1" : "custom2"
+                } `}
               onChange={(e) => {
-                setDataSource(
-                  dataSource.map((route) =>
-                    route.id === record.id ? { ...route, status: e } : route
-                  )
-                );
+                updateStatusTrip(e, record.id)
               }}
-              defaultValue={record.status}
-              options={record.status === 3 ? items2 : items1}
+              defaultValue={Number(text)}
+              options={Number(text) === 3 ? items2 : items1}
             />
           )}
         </div>
@@ -132,8 +200,10 @@ export default function Trip() {
           onClick={(e) => {
             e.stopPropagation();
             setIsModal({ isOpen: true, mode: "edit" });
-            setTripId(record.id);
+            setTripId(record.chuyenid);
             form.setFieldsValue(record);
+            form.setFieldValue('idDiemDi', record.address.split('+')[0]);
+            form.setFieldValue('idDiemDen', record.address.split('+').slice(1).join('+'));
           }}
           type="primary"
         >
@@ -143,25 +213,36 @@ export default function Trip() {
       key: "detail_ticket",
     },
   ];
-  const handleFormSubmit = (values) => {
-    if (isModal.mode === "create") {
-      const newRoute = {
-        ...values,
-        id: dataSource.length
-          ? Math.max(...dataSource.map((route) => route.id)) + 1
-          : 1,
-      };
-      setDataSource([...dataSource, newRoute]);
-    } else {
-      setDataSource(
-        dataSource.map((route) =>
-          route.id === tripId ? { ...route, ...values } : route
-        )
-      );
+  const handleFormSubmit = async (values) => {
+    const data = {
+      "maChuyen": values.maChuyen,
+      "tuyenDuongId": values.tuyenDuongId,
+      "xeId": values.xeId,
+      "idDiemDi": values.idDiemDi,
+      "idDiemDen": values.idDiemDen,
+      "thoiGianDi": "30/06/2024 20:00:00"
+
+    }
+    console.log(values)
+    const res = await apiCaller({
+      request: tripApi.createTrip(data),
+      errorHandler,
+    });
+    if (res) {
+      console.log(res.data)
+      listTrips()
     }
     setIsModal({ isOpen: false, mode: "" });
     form.resetFields();
   };
+  const itemCar = dataCar.map(item => ({
+    value: item.xeId,
+    label: item.bienSo
+  }));
+  const itemRoute = dataLocals.map(item => ({
+    value: item.code,
+    label: item.name
+  }));
   return (
     <div>
       <div className="flex justify-between items-center mb-10">
@@ -182,7 +263,7 @@ export default function Trip() {
           return {
             onClick: () => {
               setIsModal({ isOpen: true, mode: "edit" });
-              setTripId(record.id);
+              setTripId(record.chuyenid);
               form.setFieldsValue(record);
             },
           };
@@ -202,42 +283,51 @@ export default function Trip() {
           <div className="grid grid-cols-2 gap-8">
             <Form.Item
               label="Mã chuyến"
-              name="trip"
+              name="maChuyen"
               rules={[{ required: true, message: "Vui lòng nhập biển số xe" }]}
             >
               <Input className="h-12" type="text" />
             </Form.Item>
-            <Form.Item
-              label="Tuyến đường"
-              name="route"
-              rules={[{ required: true, message: "Vui lòng nhập tên tài xế" }]}
-            >
-              <Input className={"h-12"} type="text" />
-            </Form.Item>
+
             <Form.Item
               label="Biển số xe"
-              name="bien_xe"
+              name="xeId"
               rules={[{ required: true, message: "Vui lòng nhập Sđt tài xế" }]}
             >
-              <Input className={"h-12"} type="text" />
+              <Select
+                placeholder="Chọn địa điểm"
+                className="w-full h-[56px] "
+                allowClear
+                options={itemCar}
+              />
             </Form.Item>
             <Form.Item
               label="Điểm đi"
-              name="diem_di"
+              name="idDiemDi"
               rules={[{ required: true, message: "Vui lòng chọn hạng xe" }]}
             >
-              <Input className={"h-12"} type="text" />
+              <Select
+                placeholder="Chọn địa điểm"
+                className="w-full h-[56px] "
+                allowClear
+                options={itemRoute}
+              />
             </Form.Item>
             <Form.Item
               label="Điểm đến"
-              name="diem_den"
+              name="idDiemDen"
               rules={[{ required: true, message: "Vui lòng chọn tuyến đường" }]}
             >
-              <Input className={"h-12"} type="text" />
+              <Select
+                placeholder="Chọn địa điểm"
+                className="w-full h-[56px] "
+                allowClear
+                options={itemRoute}
+              />
             </Form.Item>
             <Form.Item
               label="Thời gian xuất bến"
-              name="start_time"
+              name="thoiGianDiChuyen"
               rules={[{ required: true, message: "Vui lòng nhập giá vé" }]}
             >
               <Input className={"h-12"} type="text" />

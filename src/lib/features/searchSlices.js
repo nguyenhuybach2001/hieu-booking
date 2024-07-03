@@ -21,7 +21,7 @@ export const searchSlice = createSlice({
     },
     addSearch: (state, action) => {
       state.searchInfo = action.payload;
-    },
+    }
 
   },
 });

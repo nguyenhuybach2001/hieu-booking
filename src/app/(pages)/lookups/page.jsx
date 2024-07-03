@@ -3,12 +3,15 @@ import { ticketApi } from "@/api/ticketApi";
 import { Input } from "antd";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-
+import apiCaller from "@/api/apiCaller";
+import { useDispatch } from "react-redux";
+import { addDataRouter } from "@/lib/features/searchSlices"
 export default function Lookups() {
   const [username, setUserName] = useState("");
   const [number, setNumber] = useState("");
   const [email, setEmail] = useState("");
   const router = useRouter()
+
   const search = () => {
     const errorHandler = (error) => {
       console.log("Fail: ", error);
@@ -25,6 +28,11 @@ export default function Lookups() {
       });
       if (res) {
         router.push('/trip-lists')
+        console.log(res.data)
+        localStorage.setItem(
+          'data',
+          JSON.stringify(res.data)
+        )
       }
     };
     getInformationLookups()
@@ -54,7 +62,7 @@ export default function Lookups() {
               <Input
                 className="h-14 text-lg px-10"
                 placeholder="Enter Your Phone Number"
-                type="number"
+                type="string"
                 value={number}
                 onChange={(e) => setNumber(e.target.value)}
               />

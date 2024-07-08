@@ -12,9 +12,9 @@ import { list } from "postcss";
 import React, { useEffect, useState } from "react";
 
 function addHours(timeString, hoursToAdd) {
-  console.log(timeString)
+  console.log(timeString);
   // Tách chuỗi thời gian thành các phần giờ, phút, giây
-  const [hours, minutes, seconds] = timeString?.split(':')?.map(Number);
+  const [hours, minutes, seconds] = timeString?.split(":")?.map(Number);
 
   // Tạo đối tượng Date với giờ, phút, giây từ chuỗi thời gian
   let date = new Date();
@@ -24,9 +24,9 @@ function addHours(timeString, hoursToAdd) {
   date.setHours(date.getHours() + hoursToAdd);
 
   // Lấy giờ, phút, giây từ đối tượng Date mới
-  const newHours = date.getHours().toString().padStart(2, '0');
-  const newMinutes = date.getMinutes().toString().padStart(2, '0');
-  const newSeconds = date.getSeconds().toString().padStart(2, '0');
+  const newHours = date.getHours().toString().padStart(2, "0");
+  const newMinutes = date.getMinutes().toString().padStart(2, "0");
+  const newSeconds = date.getSeconds().toString().padStart(2, "0");
 
   // Tạo chuỗi thời gian mới
   return `${newHours}:${newMinutes}:${newSeconds}`;
@@ -35,29 +35,30 @@ function addHours(timeString, hoursToAdd) {
 export default function Ticket() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const [ticketId, setTicketId] = useState('')
-  const [tripId, setTripId] = useState('')
-  const [bienSo, setBienSo] = useState('')
-  const [trip, setTrip] = useState([])
-  const [ticket, setTicket] = useState([])
-  const [soGhe, setSoGhe] = useState([])
-  const [giaVe, setGiaVe] = useState([])
-  const [dataLocals, setDataLocals] = useState([])
+  const [ticketId, setTicketId] = useState("");
+  const [tripId, setTripId] = useState("");
+  const [bienSo, setBienSo] = useState("");
+  const [tgDen, setTgDen] = useState("");
+  const [trip, setTrip] = useState([]);
+  const [ticket, setTicket] = useState([]);
+  const [soGhe, setSoGhe] = useState([]);
+  const [giaVe, setGiaVe] = useState([]);
+  const [dataLocals, setDataLocals] = useState([]);
   const [listVehicles, setListVehicles] = useState([]);
 
   const items1 = [
     {
-      value: '0',
+      value: "0",
       label: "Đã hủy",
     },
     {
-      value: '1',
+      value: "1",
       label: "Chưa thanh toán",
     },
     {
-      value: '2',
+      value: "2",
       label: "Đã thanh toán",
-    }
+    },
   ];
 
   const errorHandler = (error) => {
@@ -66,14 +67,14 @@ export default function Ticket() {
   //call api lấy thông tin vé xe
   const getInformationLookups = async () => {
     const data = {
-      veXeId: ticketId
-    }
+      veXeId: ticketId,
+    };
     const res = await apiCaller({
       request: ticketApi.searchInfoVe(data),
       errorHandler,
     });
     if (res) {
-      setTicket(res.data)
+      setTicket(res.data);
     }
   };
 
@@ -84,70 +85,71 @@ export default function Ticket() {
       errorHandler,
     });
     if (res) {
-      setListVehicles(res.data)
+      setListVehicles(res.data);
     }
   };
   //call api lấy ra địa điểm
   const getLocationTreeByCondition = async () => {
     const data = {
-      status: 1
-    }
+      status: 1,
+    };
     const res = await apiCaller({
       request: localApi.getLocationTreeByCondition(data),
       errorHandler,
     });
     if (res) {
-      setDataLocals(res.data)
+      setDataLocals(res.data);
     }
   };
 
   //call api tìm chuyến đi theo id
   const getTrip = async () => {
     const data = {
-      chuyenId: tripId
-    }
+      chuyenId: tripId,
+    };
     const res = await apiCaller({
       request: tripApi.searchTripById(data),
       errorHandler,
     });
     if (res) {
-      setTrip(res.data)
+      setTrip(res.data);
     }
   };
-  console.log(listVehicles)
+  console.log(listVehicles);
   useEffect(() => {
-    const ticketId = localStorage.getItem('ticketId')
-    setTicketId(ticketId)
-    const soGhe = ticket?.gheDat?.split(';').length
-    const giaVe = parseInt(ticket?.hoaDon) / soGhe
-    setSoGhe(soGhe)
-    setGiaVe(giaVe)
-    getAllvehicles()
-    getLocationTreeByCondition()
-  }, [])
+    const ticketId = localStorage.getItem("ticketId");
+    setTicketId(ticketId);
+    const soGhe = ticket?.gheDat?.split(";").length;
+    const giaVe = parseInt(ticket?.hoaDon) / soGhe;
+    setSoGhe(soGhe);
+    setGiaVe(giaVe);
+    getAllvehicles();
+    getLocationTreeByCondition();
+  }, []);
 
   useEffect(() => {
-    setTripId(ticket.chuyenId)
-    const soGhe = ticket?.gheDat?.split(';').length
-    const giaVe = parseInt(ticket?.hoaDon) / soGhe
-    setSoGhe(soGhe)
-    setGiaVe(giaVe)
-  }, [ticket])
+    setTripId(ticket.chuyenId);
+    const soGhe = ticket?.gheDat?.split(";").length;
+    const giaVe = parseInt(ticket?.hoaDon) / soGhe;
+    setSoGhe(soGhe);
+    setGiaVe(giaVe);
+  }, [ticket]);
 
   useEffect(() => {
-    getTrip()
-  }, [tripId])
+    getTrip();
+  }, [tripId]);
 
   useEffect(() => {
-    ticketId && getInformationLookups()
-  }, [ticketId])
-
+    ticketId && getInformationLookups();
+  }, [ticketId]);
 
   useEffect(() => {
-    const bienSo = listVehicles.find((item) => item.xeId === trip?.xeId)?.bienSo
-    setBienSo(bienSo)
-    
-  }, [trip])
+    const bienSo = listVehicles.find(
+      (item) => item.xeId === trip?.xeId
+    )?.bienSo;
+    setBienSo(bienSo);
+    setTgDen(trip?.thoiGianDi?.split(" ")[1]);
+  }, [trip]);
   const handlePay = () => {
     router.push("/pay");
   };
@@ -156,23 +158,23 @@ export default function Ticket() {
   };
   const handleCancelTicket = async () => {
     const data = {
-      veXeId: ticketId
-    }
+      veXeId: ticketId,
+    };
     const res = await apiCaller({
       request: ticketApi.cancelVe(data),
       errorHandler,
     });
     if (res) {
       router.push("/");
-      message.success(res.message)
+      message.success(res.message);
     }
-  }
+  };
   const handleBack = () => {
-    setOpen(false)
-  }
-  console.log(ticket)
-  console.log(trip)
-  console.log(dataLocals)
+    setOpen(false);
+  };
+  console.log(ticket);
+  console.log(trip);
+  console.log(dataLocals);
   return (
     <div className="w-full bg-slate-100 h-full">
       <div className="my-10 text-center underline font-bold text-5xl">
@@ -185,22 +187,32 @@ export default function Ticket() {
             <p className=" text-center text-slate-400 ">Economic</p>
             <div className="grid grid-cols-3 gap-2 mt-6 mb-4">
               <div className="col-span-1 justify-between flex flex-col gap-3 w-full">
-                <p className="font-bold">{dataLocals.find((item) => item.id === trip?.idDiemDi)?.name}</p>
-                <p className="text-5xl">{trip?.thoiGianDi?.split(' ')[1]}</p>
+                <p className="font-bold">
+                  {dataLocals.find((item) => item.id === trip?.idDiemDi)?.name}
+                </p>
+                <p className="text-5xl">{trip?.thoiGianDi?.split(" ")[1]}</p>
               </div>
               <div className="flex w-full items-end">
-                <img loading="lazy"
+                <img
+                  loading="lazy"
                   decoding="async"
                   src="/images/iconTime.webp"
                 />
               </div>
               <div className="col-span-1 items-end flex flex-col gap-3 justify-between w-full">
-                <p className="font-bold">{dataLocals.find((item) => item.id === trip?.idDiemDen)?.name}</p>
-                <p className="text-5xl">{addHours(trip?.thoiGianDi?.split(' ')[1], 8)}</p>
+                <p className="font-bold">
+                  {dataLocals.find((item) => item.id === trip?.idDiemDen)?.name}
+                </p>
+                <p className="text-5xl">{addHours(tgDen, 8)}</p>
               </div>
             </div>
-            <p className="text-center font-bold">{trip?.thoiGianDi?.split(' ')[1]} <span>ngày {trip?.thoiGianDi?.split(' ')[0]}</span></p>
-            <p className="text-center font-bold">Thời gian di chuyển: <span>{trip?.thoiGianDiChuyen}</span></p>
+            <p className="text-center font-bold">
+              {trip?.thoiGianDi?.split(" ")[1]}{" "}
+              <span>ngày {trip?.thoiGianDi?.split(" ")[0]}</span>
+            </p>
+            <p className="text-center font-bold">
+              Thời gian di chuyển: <span>{trip?.thoiGianDiChuyen}</span>
+            </p>
             <hr className="bg-black h-[1px] my-10" />
             <div className="flex justify-between gap-10">
               <p>Họ và tên:</p>
@@ -241,7 +253,12 @@ export default function Ticket() {
             </div>
             <div className="flex justify-between gap-10 mt-3">
               <p>Trạng thái </p>
-              <p className="font-bold">{items1.find((item) => item.value === ticket?.trangThaiVe)?.label}</p>
+              <p className="font-bold">
+                {
+                  items1.find((item) => item.value === ticket?.trangThaiVe)
+                    ?.label
+                }
+              </p>
             </div>
           </div>
           <div className="flex justify-between gap-3 mt-10">
@@ -266,7 +283,8 @@ export default function Ticket() {
       <Modal
         title={
           <div className="flex gap-2 items-center text-lg font-bold">
-            <img src="/images/ask.webp" alt="" className="w-5 h-5" /> Xác nhận hủy vé
+            <img src="/images/ask.webp" alt="" className="w-5 h-5" /> Xác nhận
+            hủy vé
           </div>
         }
         open={open}

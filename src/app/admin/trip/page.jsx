@@ -1,5 +1,5 @@
 "use client";
-import { Button, Form, Input, Modal, Select, Space, Table } from "antd";
+import { Button, DatePicker, Form, Input, Modal, Select, Space, Table } from "antd";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import "./style.css";
@@ -207,7 +207,7 @@ export default function Trip() {
           }}
           type="primary"
         >
-          Chi tiết vé
+          Cập nhật chuyến đi
         </div>
       ),
       key: "detail_ticket",
@@ -222,8 +222,10 @@ export default function Trip() {
       "idDiemDen": values.idDiemDen,
       "thoiGianDi": "30/06/2024 20:00:00"
 
+
     }
-    console.log(values)
+    const formattedDate = `${values.thoiGianDi.$D.toString().padStart(2, '0')}/${(values.thoiGianDi.$M + 1).toString().padStart(2, '0')}/${values.thoiGianDi.$y} ${values.thoiGianDi.$H.toString().padStart(2, '0')}:00:00`;
+    console.log(formattedDate)
     const res = await apiCaller({
       request: tripApi.createTrip(data),
       errorHandler,
@@ -327,10 +329,10 @@ export default function Trip() {
             </Form.Item>
             <Form.Item
               label="Thời gian xuất bến"
-              name="thoiGianDiChuyen"
+              name="thoiGianDi"
               rules={[{ required: true, message: "Vui lòng nhập giá vé" }]}
             >
-              <Input className={"h-12"} type="text" />
+              <DatePicker showTime/>
             </Form.Item>
           </div>
           <Form.Item className="flex justify-end">

@@ -31,7 +31,7 @@ export default function Info() {
   const [pay, setPay] = useState('1')
 
   const router = useRouter();
-  
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -67,7 +67,8 @@ export default function Info() {
     });
     if (res) {
       setData(res.data)
-      if(res.data.length === 42){
+      console.log(res.data)
+      if (res.data.length === 42) {
         setType(true)
       }
     }
@@ -134,10 +135,10 @@ export default function Info() {
       const colBNum = parseInt(colB.substring(1), 10);
       const rowANum = parseInt(rowA, 10);
       const rowBNum = parseInt(rowB, 10);
-    
+
       if (rowANum < rowBNum) return -1;
       if (rowANum > rowBNum) return 1;
-    
+
       return colANum - colBNum;
     });
     //sắp xếp mảng B
@@ -148,10 +149,10 @@ export default function Info() {
       const colBNum = parseInt(colB.substring(1), 10);
       const rowANum = parseInt(rowA, 10);
       const rowBNum = parseInt(rowB, 10);
-    
+
       if (rowANum < rowBNum) return -1;
       if (rowANum > rowBNum) return 1;
-    
+
       return colANum - colBNum;
     });
     setData1(sortedData1);
@@ -175,11 +176,11 @@ export default function Info() {
     if (res) {
       router.push("/ticket");
       localStorage.setItem(
-        'detailTicket',
-        JSON.stringify(res.data)
+        'ticketId',
+        res.data.veXeId
       )
-      }
-    
+    }
+
   };
   return (
     <div className="w-full bg-slate-100 h-full">
@@ -210,9 +211,11 @@ export default function Info() {
                   {data1.map((seat) => (
                     <div
                       key={seat.id}
-                      className={`h-16 hover:bg-b flex items-center justify-center w-14 cursor-pointer ${picked.includes(seat.gheId) ? "bg-b" : ""
+                      className={`h-16 hover:bg-b ${seat.trangThai === '0' ? "bg-[#828282] rounded" : "cursor-pointer"} flex items-center justify-center w-14 cursor-pointer ${picked.includes(seat.gheId) ? "bg-b" : ""
                         }`}
-                      onClick={() => handlePickSeat(seat.gheId)}
+                      onClick={() => {
+                        seat.trangThai === '1' ? handlePickSeat(seat.gheId) : null
+                      }}
                     >
                       {seat.maGhe}
                     </div>
@@ -228,9 +231,11 @@ export default function Info() {
                   {data2.map((seat) => (
                     <div
                       key={seat.gheId}
-                      className={`h-16 hover:bg-b flex items-center justify-center w-14 cursor-pointer ${picked.includes(seat.gheId) ? "bg-b" : ""
+                      className={`h-16 hover:bg-b ${seat.trangThai === '0' ? "bg-[#828282] rounded" : "cursor-pointer"} flex items-center justify-center w-14  ${picked.includes(seat.gheId) ? "bg-b" : ""
                         }`}
-                      onClick={() => handlePickSeat(seat.gheId)}
+                      onClick={() => {
+                        seat.trangThai === '1' ? handlePickSeat(seat.gheId) : null
+                      }}
                     >
                       {seat.maGhe}
                     </div>

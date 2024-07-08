@@ -14,13 +14,15 @@ import React, { useEffect, useState } from "react";
 export default function Ticket() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const [detailTicket, setDetailTicket] = useState([])
-  const [tripId, setTripId] = useState([])
+  const [ticketId, setTicketId] = useState('')
+  const [tripId, setTripId] = useState('')
+  const [bienSo, setBienSo] = useState('')
+  const [trip, setTrip] = useState([])
+  const [ticket, setTicket] = useState([])
+  const [soGhe, setSoGhe] = useState([])
+  const [giaVe, setGiaVe] = useState([])
   const [dataLocals, setDataLocals] = useState([])
   const [listVehicles, setListVehicles] = useState([]);
-  const [soGhe, setSoGhe] = useState('')
-  const [giaVe, setGiaVe] = useState('')
-  const [trip, setTrip] = useState([])
 
   const items1 = [
     {
@@ -39,6 +41,19 @@ export default function Ticket() {
 
   const errorHandler = (error) => {
     console.log("Fail: ", error);
+  };
+  //call api lấy thông tin vé xe
+  const getInformationLookups = async () => {
+    const data = {
+      veXeId: ticketId
+    }
+    const res = await apiCaller({
+      request: ticketApi.searchInfoVe(data),
+      errorHandler,
+    });
+    if (res) {
+      setTicket(res.data)
+    }
   };
 
   //call api lấy ra danh sách xe
@@ -62,25 +77,10 @@ export default function Ticket() {
     });
     if (res) {
       setDataLocals(res.data)
-      console.log(res.data)
     }
   };
 
-  useEffect(() => {
-    const tripId = localStorage.getItem('tripId')
-    setTripId(tripId)
-    const detailTicket = JSON.parse(localStorage.getItem('detailTicket'))
-    const soGhe = detailTicket?.gheDat.split(';').length
-    const giaVe = parseInt(detailTicket?.hoaDon) / soGhe
-    setSoGhe(soGhe)
-    setGiaVe(giaVe)
-    setDetailTicket(detailTicket)
-    getAllvehicles()
-    getLocationTreeByCondition()
-  }, [])
-
-  
-  //call api lấy ra chuến đi hiện tại
+  //call api tìm chuyến đi theo id
   const getTrip = async () => {
     const data = {
       chuyenId: tripId
@@ -91,13 +91,40 @@ export default function Ticket() {
     });
     if (res) {
       setTrip(res.data)
-      console.log(res.data)
     }
   };
+console.log(listVehicles)
+  useEffect(() => {
+    const ticketId = localStorage.getItem('ticketId')
+    setTicketId(ticketId)
+    const soGhe = ticket?.gheDat?.split(';').length
+    const giaVe = parseInt(ticket?.hoaDon) / soGhe
+    setSoGhe(soGhe)
+    setGiaVe(giaVe)
+    getAllvehicles()
+    getLocationTreeByCondition()
+  }, [])
+
+  useEffect(() => {
+    setTripId(ticket.chuyenId)
+    const soGhe = ticket?.gheDat?.split(';').length
+    const giaVe = parseInt(ticket?.hoaDon) / soGhe
+    setSoGhe(soGhe)
+    setGiaVe(giaVe)
+  }, [ticket])
+
   useEffect(() => {
     getTrip()
   }, [tripId])
 
+  useEffect(() => {
+    ticketId && getInformationLookups()
+  }, [ticketId])
+
+  useEffect(() => {
+    const bienSo = listVehicles.find((item) => item.xeId === trip?.xeId)?.bienSo 
+    setBienSo(bienSo)
+  }, [trip])
   const handlePay = () => {
     router.push("/pay");
   };
@@ -106,7 +133,7 @@ export default function Ticket() {
   };
   const handleCancelTicket = async () => {
     const data = {
-      veXeId: detailTicket?.veXeId
+      veXeId: ticketId
     }
     const res = await apiCaller({
       request: ticketApi.cancelVe(data),
@@ -120,7 +147,9 @@ export default function Ticket() {
   const handleBack = () => {
     setOpen(false)
   }
-
+console.log(ticket)
+console.log(trip)
+console.log(dataLocals)
   return (
     <div className="w-full bg-slate-100 h-full">
       <div className="my-10 text-center underline font-bold text-5xl">
@@ -134,7 +163,7 @@ export default function Ticket() {
             <div className="grid grid-cols-3 gap-2 mt-6 mb-4">
               <div className="col-span-1 justify-between flex flex-col gap-3 w-full">
                 <p className="font-bold">{dataLocals.find((item) => item.id === trip?.idDiemDi)?.name}</p>
-                <p className="text-5xl">19:30</p>
+                <p className="text-5xl">{trip?.thoiGianDi?.split(' ')[1]}</p>
               </div>
               <div className="flex w-full items-end">
                 <img loading="lazy"
@@ -152,15 +181,15 @@ export default function Ticket() {
             <hr className="bg-black h-[1px] my-10" />
             <div className="flex justify-between gap-10">
               <p>Họ và tên:</p>
-              <p className="font-bold">{detailTicket?.hoTenKhach}</p>
+              <p className="font-bold">{ticket?.hoTenKhach}</p>
             </div>
             <div className="flex justify-between gap-10 mt-5">
               <p>Số điện thoại:</p>
-              <p className="font-bold">{detailTicket?.sdtKhach}</p>
+              <p className="font-bold">{ticket?.sdtKhach}</p>
             </div>
             <div className="flex justify-between gap-10 mt-5">
               <p>Email</p>
-              <p className="font-bold">{detailTicket?.emailKhack}</p>
+              <p className="font-bold">{ticket?.emailKhack}</p>
             </div>
           </div>
         </div>
@@ -168,7 +197,7 @@ export default function Ticket() {
           <div className="bg-white w-full rounded-xl py-10 px-5">
             <div className="flex justify-between gap-10 mt-5">
               <p>Biển số xe</p>
-              <p className="font-bold">{listVehicles.find((item) => item.xeId === trip?.xeId)?.bienSo}</p>
+              <p className="font-bold">{bienSo}</p>
             </div>
             <div className="flex justify-between gap-10 mt-3">
               <p>Giá vé</p>
@@ -180,16 +209,16 @@ export default function Ticket() {
             </div>
             <div className="flex justify-between gap-10 mt-3">
               <p>Vị trí ghế:</p>
-              <p className="font-bold">{detailTicket?.gheDat}</p>
+              <p className="font-bold">{ticket?.gheDat}</p>
             </div>
             <hr className="bg-slate-200 h-[2px] my-10" />
             <div className="flex justify-between gap-10 ">
               <p>Thành tiền</p>
-              <p className="font-bold text-blue-500">{detailTicket?.hoaDon} VNĐ</p>
+              <p className="font-bold text-blue-500">{ticket?.hoaDon} VNĐ</p>
             </div>
             <div className="flex justify-between gap-10 mt-3">
               <p>Trạng thái </p>
-              <p className="font-bold">{items1.find((item) => item.value === detailTicket?.trangThaiVe)?.label}</p>
+              <p className="font-bold">{items1.find((item) => item.value === ticket?.trangThaiVe)?.label}</p>
             </div>
           </div>
           <div className="flex justify-between gap-3 mt-10">

@@ -6,6 +6,10 @@ export const ticketApi = {
     return axiosClient.post(ENDPOINTS.SEARCH_VE, data);
   },
 
+  searchInfoVe: (data) => () => {
+    return axiosClient.post(ENDPOINTS.SEARCH_INFO_VE, data);
+  },
+
   cancelVe: (data) => () => {
     return axiosClient.post(ENDPOINTS.CANCEL_VE, data);
   },

@@ -1,5 +1,6 @@
 'use client'
 import apiCaller from "@/api/apiCaller";
+import { ticketApi } from "@/api/ticketApi";
 import { tripApi } from "@/api/tripApi";
 import { xeApi } from "@/api/xeApi";
 import { Image, QRCode } from "antd";
@@ -11,6 +12,9 @@ export default function PayPage() {
   const [tripId, setTripId] = useState([])
   const [detailTicket, setDetailTicket] = useState([])
   const [soGhe, setSoGhe] = useState('')
+  const [ticket, setTicket] = useState([])
+  const [ticketId, setTicketId] = useState('')
+  const [giaVe, setGiaVe] = useState([])
 
   const errorHandler = (error) => {
     console.log("Fail: ", error);
@@ -54,19 +58,37 @@ export default function PayPage() {
       console.log(res.data)
     }
   };
+  //call api lấy thông tin vé xe
+  const getInformationLookups = async () => {
+    const data = {
+      veXeId: ticketId
+    }
+    const res = await apiCaller({
+      request: ticketApi.searchInfoVe(data),
+      errorHandler,
+    });
+    if (res) {
+      setTicket(res.data)
+    }
+  };
+  console.log(ticket)
   useEffect(() => {
-    const detailTicket = JSON.parse(localStorage.getItem('detailTicket'))
-    setDetailTicket(detailTicket)
-    const soGhe = detailTicket?.gheDat.split(';').length
+    const soGhe = ticket?.gheDat?.split(';').length
+    const giaVe = parseInt(ticket?.hoaDon) / soGhe
     setSoGhe(soGhe)
-    const tripId = localStorage.getItem('tripId')
-    setTripId(tripId)
+    setGiaVe(giaVe)
+  }, [ticket])
+  useEffect(() => {
+    getInformationLookups()
+  }, [ticketId])
+  useEffect(() => {
+    const ticketId = localStorage.getItem('ticketId')
+    setTicketId(ticketId)
     getAllvehicles()
   }, [])
   useEffect(() => {
     getTrip()
   }, [tripId])
-  console.log(trip)
   return (
     <div className="w-full bg-slate-100 h-full">
       <div className="max-w-6xl px-12 mx-auto pb-20">
@@ -110,7 +132,7 @@ export default function PayPage() {
                   </div>
                   <div className="flex justify-between gap-10 mt-2">
                     <p>Giá vé</p>
-                    <p className="font-bold">{trip?.giaVe}</p>
+                    <p className="font-bold">{giaVe}</p>
                   </div>
                   <div className="flex justify-between gap-10 mt-2">
                     <p>Số Ghế</p>
@@ -122,12 +144,12 @@ export default function PayPage() {
                   <div className="flex justify-between gap-10 mt-2">
                     <p>Thành tiền</p>
                     <p className="font-bold text-blue-500 text-xl">
-                      {detailTicket.hoaDon}
+                      {ticket?.hoaDon} VNĐ
                     </p>
                   </div>
                   <div className="flex justify-between gap-10 mt-2">
                     <p>Trạng thái</p>
-                    <p className="font-bold">{items1.find((item) => item.value === detailTicket?.trangThaiVe)?.label}</p>
+                    <p className="font-bold">{items1.find((item) => item.value === ticket?.trangThaiVe)?.label}</p>
                   </div>
                 </div>
               </div>

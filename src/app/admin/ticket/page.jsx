@@ -76,7 +76,7 @@ export default function Ticket() {
       title: "Chuyến đi",
       dataIndex: "chuyenId",
       key: "chuyenId",
-      render: (text)=><p>{dataTrip.find((item) => item.chuyenId === text).maChuyen}</p>
+      render: (text)=><p>{dataTrip.find((item) => item.chuyenId === text)?.maChuyen}</p>
     },
     {
       title: "Tên khách hàng",

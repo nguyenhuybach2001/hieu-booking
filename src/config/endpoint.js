@@ -6,6 +6,7 @@ export const ENDPOINTS = {
   GET_ALL_XE: "/booking/xe/danh_sach_xe",
   //endpoint ve
   SEARCH_VE: "/booking/ve/tim_kiem_ve",
+  SEARCH_INFO_VE: "/booking/ve/tim_kiem_thong_tin_ve",
   CANCEL_VE: "/booking/ve/huy_ve",
   LIST_VE_IN_TRIP: "/booking/ve/danh_sach_ve_trong_chuyen",
   LIST_VE: "/booking/ve/danh_sach_ve",

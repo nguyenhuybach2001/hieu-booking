@@ -1,7 +1,72 @@
+'use client'
+import apiCaller from "@/api/apiCaller";
+import { tripApi } from "@/api/tripApi";
+import { xeApi } from "@/api/xeApi";
 import { Image, QRCode } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function PayPage() {
+  const [listVehicles, setListVehicles] = useState([]);
+  const [trip, setTrip] = useState([])
+  const [tripId, setTripId] = useState([])
+  const [detailTicket, setDetailTicket] = useState([])
+  const [soGhe, setSoGhe] = useState('')
+
+  const errorHandler = (error) => {
+    console.log("Fail: ", error);
+  };
+  const items1 = [
+    {
+      value: '0',
+      label: "Đã hủy",
+    },
+    {
+      value: '1',
+      label: "Chưa thanh toán",
+    },
+    {
+      value: '2',
+      label: "Đã thanh toán",
+    }
+  ];
+
+  //call api lấy ra danh sách xe
+  const getAllvehicles = async () => {
+    const res = await apiCaller({
+      request: xeApi.getAllVehicles(),
+      errorHandler,
+    });
+    if (res) {
+      setListVehicles(res.data)
+    }
+  };
+  //call api lấy ra chuến đi hiện tại
+  const getTrip = async () => {
+    const data = {
+      chuyenId: tripId
+    }
+    const res = await apiCaller({
+      request: tripApi.searchTripById(data),
+      errorHandler,
+    });
+    if (res) {
+      setTrip(res.data)
+      console.log(res.data)
+    }
+  };
+  useEffect(() => {
+    const detailTicket = JSON.parse(localStorage.getItem('detailTicket'))
+    setDetailTicket(detailTicket)
+    const soGhe = detailTicket?.gheDat.split(';').length
+    setSoGhe(soGhe)
+    const tripId = localStorage.getItem('tripId')
+    setTripId(tripId)
+    getAllvehicles()
+  }, [])
+  useEffect(() => {
+    getTrip()
+  }, [tripId])
+  console.log(trip)
   return (
     <div className="w-full bg-slate-100 h-full">
       <div className="max-w-6xl px-12 mx-auto pb-20">
@@ -40,16 +105,16 @@ export default function PayPage() {
               <div className="flex justify-between gap-5">
                 <div>
                   <div className="flex justify-between gap-10">
-                    <p>Mã Đơn</p>
-                    <p className="font-bold">CATW112</p>
+                    <p>Biển số xe</p>
+                    <p className="font-bold">{listVehicles.find((item) => item.xeId === trip?.xeId)?.bienSo}</p>
                   </div>
                   <div className="flex justify-between gap-10 mt-2">
                     <p>Giá vé</p>
-                    <p className="font-bold">500.000 VNĐ</p>
+                    <p className="font-bold">{trip?.giaVe}</p>
                   </div>
                   <div className="flex justify-between gap-10 mt-2">
                     <p>Số Ghế</p>
-                    <p className="font-bold">2</p>
+                    <p className="font-bold">{soGhe}</p>
                   </div>
                 </div>
                 <hr className="bg-slate-200 h-[85px] w-[1px]" />
@@ -57,12 +122,12 @@ export default function PayPage() {
                   <div className="flex justify-between gap-10 mt-2">
                     <p>Thành tiền</p>
                     <p className="font-bold text-blue-500 text-xl">
-                      1.000.000 VNĐ
+                      {detailTicket.hoaDon}
                     </p>
                   </div>
                   <div className="flex justify-between gap-10 mt-2">
                     <p>Trạng thái</p>
-                    <p className="font-bold">Chưa thanh toán</p>
+                    <p className="font-bold">{items1.find((item) => item.value === detailTicket?.trangThaiVe)?.label}</p>
                   </div>
                 </div>
               </div>

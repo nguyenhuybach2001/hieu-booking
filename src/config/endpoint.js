@@ -20,6 +20,7 @@ export const ENDPOINTS = {
   //endpoint chuyen di
   LIST_TRIP: "/booking/chuyen_di/danh_sach_chuyen_di",
   SEARCH_TRIP: "/booking/chuyen_di/tim_chuyen_di",
+  SEARCH_TRIP_BY_ID: "/booking/chuyen_di/tim_chuyen_di_theo_id",
   CREATE_TRIP: "/booking/chuyen_di/them_chuyen_di",
   UPDATE_STATUS_TRIP: "/booking/chuyen_di/update_trang_thai_chuyen_di",
   UPDATE_TRIP: "/booking/chuyen_di/sua_chuyen_di",

@@ -23,7 +23,7 @@ export default function SearchPage() {
     const year = currentDate.getFullYear();
     return `${day}-${month}-${year}`;
   };
-
+console.log(dataTrip)
   const errorHandler = (error) => {
     console.log("Fail: ", error);
   };
@@ -55,7 +55,6 @@ export default function SearchPage() {
     getLocationTreeByCondition()
     getTreeLocation()
   }, [])
-  console.log(dataTrip,searchInfo)
   const currentDate = getCurrentDate();
   const modalDetail = useSelector((state) => state.search.modalDetail);
   return (

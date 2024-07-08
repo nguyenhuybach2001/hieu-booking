@@ -66,7 +66,10 @@ export default function Trip(props) {
       <Link
         href={"/fill-infomation"}
         className="col-span-2 border-[2px] border-slate-200 rounded-2xl m-2"
-        onClick={() => dispatch(addTripId(props.id))}
+        onClick={() => {
+          dispatch(addTripId(props.id))
+          localStorage.setItem('tripId', props.id)
+        }}
       >
         <div className="w-max mx-auto mt-5">Còn {props.blank} chỗ trống </div>
         <div className="w-max mx-auto mt-10 text-4xl font-medium">

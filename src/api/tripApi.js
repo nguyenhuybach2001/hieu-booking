@@ -10,6 +10,10 @@ export const tripApi = {
   searchTrips: (data) => () => {
     return axiosClient.post(ENDPOINTS.SEARCH_TRIP, data);
   },
+  
+  searchTripById: (data) => () => {
+    return axiosClient.post(ENDPOINTS.SEARCH_TRIP_BY_ID, data);
+  },
 
   createTrip: (data) => () => {
     return axiosClient.post(ENDPOINTS.CREATE_TRIP, data);

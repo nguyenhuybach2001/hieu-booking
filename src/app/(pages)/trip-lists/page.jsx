@@ -4,8 +4,10 @@ import { Table } from "antd";
 import "./index.css";
 import { tripApi } from "@/api/tripApi";
 import apiCaller from "@/api/apiCaller";
+import { useRouter } from "next/navigation";
 
 export default function TripListPage() {
+  const router = useRouter();
   const [listTrips, setListTrips] = useState([])
   const [trips, setTrips] = useState([])
   const errorHandler = (error) => {
@@ -45,19 +47,19 @@ export default function TripListPage() {
       dataIndex: "chuyenId",
       key: "trip",
       width: 200,
-      render: (text)=><p>{listTrips.find((item) => item.chuyenId === text)?.maChuyen}</p>
+      render: (text) => <p>{listTrips.find((item) => item.chuyenId === text)?.maChuyen}</p>
     },
     {
       title: "Ngày xuất bến",
       dataIndex: "chuyenId",
       key: "date",
-      render: (text)=><p>{listTrips.find((item) => item.chuyenId === text)?.thoiGianDi.split(" ")[0]}</p>
+      render: (text) => <p>{listTrips.find((item) => item.chuyenId === text)?.thoiGianDi.split(" ")[0]}</p>
     },
     {
       title: "Giờ xuất bến",
       dataIndex: "chuyenId",
       key: "time_start",
-      render: (text)=><p>{listTrips.find((item) => item.chuyenId === text)?.thoiGianDi.split(" ")[1]}</p>
+      render: (text) => <p>{listTrips.find((item) => item.chuyenId === text)?.thoiGianDi.split(" ")[1]}</p>
     },
     {
       title: "Thành tiền(VNĐ)",
@@ -68,7 +70,7 @@ export default function TripListPage() {
       title: "Trạng thái",
       dataIndex: "trangThaiVe",
       key: "state",
-      render: (text)=><p>{items1.find((item) => item.value === text)?.label}</p>
+      render: (text) => <p>{items1.find((item) => item.value === text)?.label}</p>
     },
     {
       title: "",
@@ -77,7 +79,10 @@ export default function TripListPage() {
       render: (text, record) => (
         <button
           className="bg-orange-400 py-2 px-5 w-full rounded-lg text-white"
-          onClick={() => { }}
+          onClick={() => {
+            router.push("/ticket");
+
+          }}
         >
           Xem
         </button>

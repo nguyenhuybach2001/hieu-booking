@@ -1,5 +1,14 @@
 "use client";
-import { Button, DatePicker, Form, Input, Modal, Select, Space, Table } from "antd";
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Select,
+  Space,
+  Table,
+} from "antd";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import "./style.css";
@@ -13,10 +22,10 @@ export default function Trip() {
   const [form] = Form.useForm();
   const [tripId, setTripId] = useState(null);
   const [isModal, setIsModal] = useState({ isOpen: false, mode: "" });
-  const [dataRoutes, setDataRoutes] = useState([])
+  const [dataRoutes, setDataRoutes] = useState([]);
   const [dataSource, setDataSource] = useState([]);
-  const [dataLocals, setDataLocals] = useState([])
-  const [dataCar, setDataCar] = useState([])
+  const [dataLocals, setDataLocals] = useState([]);
+  const [dataCar, setDataCar] = useState([]);
 
   const errorHandler = (error) => {
     console.log("Fail: ", error);
@@ -27,8 +36,8 @@ export default function Trip() {
       errorHandler,
     });
     if (res) {
-      setDataSource(res.data)
-      console.log(res.data)
+      setDataSource(res.data);
+      console.log(res.data);
     }
   };
   const getAllRoute = async () => {
@@ -37,20 +46,20 @@ export default function Trip() {
       errorHandler,
     });
     if (res) {
-      setDataRoutes(res.data)
-      console.log(res.data)
+      setDataRoutes(res.data);
+      console.log(res.data);
     }
   };
   const getLocationTreeByCondition = async () => {
     const data = {
-      status: 1
-    }
+      status: 1,
+    };
     const res = await apiCaller({
       request: localApi.getLocationTreeByCondition(data),
       errorHandler,
     });
     if (res) {
-      setDataLocals(res.data)
+      setDataLocals(res.data);
     }
   };
   const getAllCar = async () => {
@@ -59,31 +68,30 @@ export default function Trip() {
       errorHandler,
     });
     if (res) {
-      setDataCar(res.data)
+      setDataCar(res.data);
     }
   };
   const updateStatusTrip = async (status, chuyenId) => {
-
     const data = {
-      "chuyenId": chuyenId,
-      "trangThai": status
-    }
-    console.log(data, chuyenId)
+      chuyenId: chuyenId,
+      trangThai: status,
+    };
+    console.log(data, chuyenId);
     const res = await apiCaller({
       request: tripApi.updateStatusTrip(data),
       errorHandler,
     });
     if (res) {
-      console.log(res.data)
-      listTrips()
+      console.log(res.data);
+      listTrips();
     }
   };
   useEffect(() => {
-    getAllCar()
-    listTrips()
-    getAllRoute()
-    getLocationTreeByCondition()
-  }, [])
+    getAllCar();
+    listTrips();
+    getAllRoute();
+    getLocationTreeByCondition();
+  }, []);
   const items1 = [
     {
       value: 1,
@@ -118,16 +126,16 @@ export default function Trip() {
     };
   });
   const getNameFromId = (inputString, data) => {
-    const ids = inputString.split('+');
-    const names = ids.map(id => {
-      const found = data.find(item => item.id === id);
+    const ids = inputString.split("+");
+    const names = ids.map((id) => {
+      const found = data.find((item) => item.id === id);
       return found ? found.name : null;
     });
 
-    return names.join(' - ');
+    return names.join(" - ");
   };
   const getBienSoFromXeId = (id, vehicles) => {
-    const vehicle = vehicles.find(item => item.xeId === id);
+    const vehicle = vehicles.find((item) => item.xeId === id);
     return vehicle ? vehicle.bienSo : null;
   };
   const columns = [
@@ -140,13 +148,13 @@ export default function Trip() {
       title: "Biển số xe",
       dataIndex: "xeId",
       key: "xeId",
-      render: (text) => <p>{getBienSoFromXeId(text, dataCar)}</p>
+      render: (text) => <p>{getBienSoFromXeId(text, dataCar)}</p>,
     },
     {
       title: "Điểm đi - Điểm đến",
       dataIndex: "address",
       key: "address",
-      render: (text) => <p>{getNameFromId(text, dataLocals)}</p>
+      render: (text) => <p>{getNameFromId(text, dataLocals)}</p>,
     },
     {
       title: "Ghế trống",
@@ -181,10 +189,11 @@ export default function Trip() {
             </p>
           ) : (
             <Select
-              className={`w-full ${Number(text) === 3 ? "custom1" : "custom2"
-                } `}
+              className={`w-full ${
+                Number(text) === 3 ? "custom1" : "custom2"
+              } `}
               onChange={(e) => {
-                updateStatusTrip(e, record.id)
+                updateStatusTrip(e, record.id);
               }}
               defaultValue={Number(text)}
               options={Number(text) === 3 ? items2 : items1}
@@ -202,8 +211,11 @@ export default function Trip() {
             setIsModal({ isOpen: true, mode: "edit" });
             setTripId(record.chuyenid);
             form.setFieldsValue(record);
-            form.setFieldValue('idDiemDi', record.address.split('+')[0]);
-            form.setFieldValue('idDiemDen', record.address.split('+').slice(1).join('+'));
+            form.setFieldValue("idDiemDi", record.address.split("+")[0]);
+            form.setFieldValue(
+              "idDiemDen",
+              record.address.split("+").slice(1).join("+")
+            );
           }}
           type="primary"
         >
@@ -214,34 +226,51 @@ export default function Trip() {
     },
   ];
   const handleFormSubmit = async (values) => {
-    const formattedDate = `${values.thoiGianDi.$D.toString().padStart(2, '0')}/${(values.thoiGianDi.$M + 1).toString().padStart(2, '0')}/${values.thoiGianDi.$y} ${values.thoiGianDi.$H.toString().padStart(2, '0')}:${values.thoiGianDi.$m.toString().padStart(2, '0')}:${values.thoiGianDi.$s.toString().padStart(2, '0')}`;
+    const formattedDate = `${values.thoiGianDi.$D
+      .toString()
+      .padStart(2, "0")}/${(values.thoiGianDi.$M + 1)
+      .toString()
+      .padStart(2, "0")}/${values.thoiGianDi.$y} ${values.thoiGianDi.$H
+      .toString()
+      .padStart(2, "0")}:${values.thoiGianDi.$m
+      .toString()
+      .padStart(2, "0")}:${values.thoiGianDi.$s.toString().padStart(2, "0")}`;
     const data = {
-      "maChuyen": values.maChuyen,
-      "tuyenDuongId": values.tuyenDuongId,
-      "xeId": values.xeId,
-      "idDiemDi": values.idDiemDi,
-      "idDiemDen": values.idDiemDen,
-      "thoiGianDi": formattedDate
-    }
-    console.log(formattedDate)
+      maChuyen: values.maChuyen,
+      tuyenDuongId: values.tuyenDuongId,
+      xeId: values.xeId,
+      idDiemDi: values.idDiemDi,
+      idDiemDen: values.idDiemDen,
+      thoiGianDi: formattedDate,
+    };
+    const data1 = {
+      chuyenId: tripId,
+      maChuyen: values.maChuyen,
+      tuyenDuongId: values.tuyenDuongId,
+      xeId: values.xeId,
+      idDiemDi: values.idDiemDi,
+      idDiemDen: values.idDiemDen,
+      thoiGianDi: formattedDate,
+    };
     const res = await apiCaller({
-      request: tripApi.createTrip(data),
+      request:
+        tripId !== null ? tripApi.updateTrip(data1) : tripApi.createTrip(data),
       errorHandler,
     });
     if (res) {
-      console.log(res.data)
-      listTrips()
+      console.log(res.data);
+      listTrips();
     }
     setIsModal({ isOpen: false, mode: "" });
     form.resetFields();
   };
-  const itemCar = dataCar.map(item => ({
+  const itemCar = dataCar.map((item) => ({
     value: item.xeId,
-    label: item.bienSo
+    label: item.bienSo,
   }));
-  const itemRoute = dataLocals.map(item => ({
+  const itemRoute = dataLocals.map((item) => ({
     value: item.code,
-    label: item.name
+    label: item.name,
   }));
   return (
     <div>
@@ -330,7 +359,7 @@ export default function Trip() {
               name="thoiGianDi"
               rules={[{ required: true, message: "Vui lòng nhập giá vé" }]}
             >
-              <DatePicker showTime/>
+              <DatePicker showTime />
             </Form.Item>
           </div>
           <Form.Item className="flex justify-end">

@@ -214,17 +214,15 @@ export default function Trip() {
     },
   ];
   const handleFormSubmit = async (values) => {
+    const formattedDate = `${values.thoiGianDi.$D.toString().padStart(2, '0')}/${(values.thoiGianDi.$M + 1).toString().padStart(2, '0')}/${values.thoiGianDi.$y} ${values.thoiGianDi.$H.toString().padStart(2, '0')}:${values.thoiGianDi.$m.toString().padStart(2, '0')}:${values.thoiGianDi.$s.toString().padStart(2, '0')}`;
     const data = {
       "maChuyen": values.maChuyen,
       "tuyenDuongId": values.tuyenDuongId,
       "xeId": values.xeId,
       "idDiemDi": values.idDiemDi,
       "idDiemDen": values.idDiemDen,
-      "thoiGianDi": "30/06/2024 20:00:00"
-
-
+      "thoiGianDi": formattedDate
     }
-    const formattedDate = `${values.thoiGianDi.$D.toString().padStart(2, '0')}/${(values.thoiGianDi.$M + 1).toString().padStart(2, '0')}/${values.thoiGianDi.$y} ${values.thoiGianDi.$H.toString().padStart(2, '0')}:00:00`;
     console.log(formattedDate)
     const res = await apiCaller({
       request: tripApi.createTrip(data),

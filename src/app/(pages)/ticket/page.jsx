@@ -11,6 +11,27 @@ import { useRouter } from "next/navigation";
 import { list } from "postcss";
 import React, { useEffect, useState } from "react";
 
+function addHours(timeString, hoursToAdd) {
+  console.log(timeString)
+  // Tách chuỗi thời gian thành các phần giờ, phút, giây
+  const [hours, minutes, seconds] = timeString?.split(':')?.map(Number);
+
+  // Tạo đối tượng Date với giờ, phút, giây từ chuỗi thời gian
+  let date = new Date();
+  date.setHours(hours, minutes, seconds);
+
+  // Cộng thêm giờ
+  date.setHours(date.getHours() + hoursToAdd);
+
+  // Lấy giờ, phút, giây từ đối tượng Date mới
+  const newHours = date.getHours().toString().padStart(2, '0');
+  const newMinutes = date.getMinutes().toString().padStart(2, '0');
+  const newSeconds = date.getSeconds().toString().padStart(2, '0');
+
+  // Tạo chuỗi thời gian mới
+  return `${newHours}:${newMinutes}:${newSeconds}`;
+}
+
 export default function Ticket() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
@@ -93,7 +114,7 @@ export default function Ticket() {
       setTrip(res.data)
     }
   };
-console.log(listVehicles)
+  console.log(listVehicles)
   useEffect(() => {
     const ticketId = localStorage.getItem('ticketId')
     setTicketId(ticketId)
@@ -121,9 +142,11 @@ console.log(listVehicles)
     ticketId && getInformationLookups()
   }, [ticketId])
 
+
   useEffect(() => {
-    const bienSo = listVehicles.find((item) => item.xeId === trip?.xeId)?.bienSo 
+    const bienSo = listVehicles.find((item) => item.xeId === trip?.xeId)?.bienSo
     setBienSo(bienSo)
+    
   }, [trip])
   const handlePay = () => {
     router.push("/pay");
@@ -147,9 +170,9 @@ console.log(listVehicles)
   const handleBack = () => {
     setOpen(false)
   }
-console.log(ticket)
-console.log(trip)
-console.log(dataLocals)
+  console.log(ticket)
+  console.log(trip)
+  console.log(dataLocals)
   return (
     <div className="w-full bg-slate-100 h-full">
       <div className="my-10 text-center underline font-bold text-5xl">
@@ -173,7 +196,7 @@ console.log(dataLocals)
               </div>
               <div className="col-span-1 items-end flex flex-col gap-3 justify-between w-full">
                 <p className="font-bold">{dataLocals.find((item) => item.id === trip?.idDiemDen)?.name}</p>
-                <p className="text-5xl">06:00</p>
+                <p className="text-5xl">{addHours(trip?.thoiGianDi?.split(' ')[1], 8)}</p>
               </div>
             </div>
             <p className="text-center font-bold">{trip?.thoiGianDi?.split(' ')[1]} <span>ngày {trip?.thoiGianDi?.split(' ')[0]}</span></p>

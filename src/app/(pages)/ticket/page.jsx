@@ -113,6 +113,7 @@ export default function Ticket() {
     });
     if (res) {
       setTrip(res.data);
+      setTgDen(res.data.thoiGianDi.split(' ')[1])
     }
   };
   console.log(listVehicles);
@@ -148,7 +149,6 @@ export default function Ticket() {
       (item) => item.xeId === trip?.xeId
     )?.bienSo;
     setBienSo(bienSo);
-    setTgDen(trip?.thoiGianDi?.split(" ")[1]);
   }, [trip]);
   const handlePay = () => {
     router.push("/pay");
@@ -174,7 +174,8 @@ export default function Ticket() {
   };
   console.log(ticket);
   console.log(trip);
-  console.log(dataLocals);
+  console.log(tgDen);
+
   return (
     <div className="w-full bg-slate-100 h-full">
       <div className="my-10 text-center underline font-bold text-5xl">
@@ -190,7 +191,7 @@ export default function Ticket() {
                 <p className="font-bold">
                   {dataLocals.find((item) => item.id === trip?.idDiemDi)?.name}
                 </p>
-                <p className="text-5xl">{trip?.thoiGianDi?.split(" ")[1]}</p>
+                <p className="text-5xl">{trip?.thoiGianDi?.split(" ")[1]?.split(':')[0]}<span>:{trip?.thoiGianDi?.split(" ")[1]?.split(':')[1]}</span></p>
               </div>
               <div className="flex w-full items-end">
                 <img
@@ -203,15 +204,11 @@ export default function Ticket() {
                 <p className="font-bold">
                   {dataLocals.find((item) => item.id === trip?.idDiemDen)?.name}
                 </p>
-                <p className="text-5xl">{addHours(tgDen, 8)}</p>
+                <p className="text-5xl">{addHours(tgDen, 8)?.split(':')[0]}<span>:{addHours(tgDen, 8)?.split(':')[1]}</span></p>
               </div>
             </div>
-            <p className="text-center font-bold">
-              {trip?.thoiGianDi?.split(" ")[1]}{" "}
-              <span>ngày {trip?.thoiGianDi?.split(" ")[0]}</span>
-            </p>
-            <p className="text-center font-bold">
-              Thời gian di chuyển: <span>{trip?.thoiGianDiChuyen}</span>
+            <p className="text-center font-bold text-xl mt-5">
+              Ngày {trip?.thoiGianDi?.split(" ")[0]}
             </p>
             <hr className="bg-black h-[1px] my-10" />
             <div className="flex justify-between gap-10">

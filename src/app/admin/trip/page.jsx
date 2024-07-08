@@ -110,7 +110,7 @@ export default function Trip() {
       id: val.chuyenId,
       xeId: val.xeId,
       gheConTrong: val.gheConTrong,
-      thoiGianDiChuyen: val.thoiGianDiChuyen,
+      thoiGianDi: val.thoiGianDi,
       maChuyen: val.maChuyen,
       tuyenDuongId: val.tuyenDuongId,
       status: val.trangThai,
@@ -155,7 +155,7 @@ export default function Trip() {
     },
     {
       title: "Thời gian xuất bến",
-      dataIndex: "thoiGianDiChuyen",
+      dataIndex: "thoiGianDi",
       key: "thoiGianDiChuyen",
     },
     {

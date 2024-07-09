@@ -25,4 +25,8 @@ export const ticketApi = {
   createVe: (data) => () => {
     return axiosClient.post(ENDPOINTS.CREATE_VE, data);
   },
+
+  updateVe: (data) => () => {
+    return axiosClient.post(ENDPOINTS.UPDATE_VE, data);
+  },
 };

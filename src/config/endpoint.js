@@ -11,6 +11,7 @@ export const ENDPOINTS = {
   LIST_VE_IN_TRIP: "/booking/ve/danh_sach_ve_trong_chuyen",
   LIST_VE: "/booking/ve/danh_sach_ve",
   CREATE_VE: "/booking/ve/da_ve",
+  UPDATE_VE: "/booking/ve/update_ve",
   //endpoint tuyen duong
   DELETE_ROUTE: "/booking/tuyen_duong/xoa_tuyen_duong",
   ADD_ROUTE: "/booking/tuyen_duong/them_tuyen_duong",
@@ -18,6 +19,8 @@ export const ENDPOINTS = {
   UPDATE_ROUTE: "/booking/tuyen_duong/chinh_sua_tuyen_duong",
   //endpoint ghe
   LIST_SEAT: "/booking/ghe/danh_sach_ghe_tren_chuyen",
+  //endpoint hang xe
+  LIST_RANK_CAR: "/booking/hang_xe/danh_sach_hang_xe",
   //endpoint chuyen di
   LIST_TRIP: "/booking/chuyen_di/danh_sach_chuyen_di",
   SEARCH_TRIP: "/booking/chuyen_di/tim_chuyen_di",

@@ -98,18 +98,18 @@ export default function Trip() {
       label: "Chưa xuất bến",
     },
     {
-      value: 2,
+      value: 0,
       label: "Hủy chuyến",
     },
     {
-      value: 3,
+      value: 2,
       label: "Đang di chuyển",
     },
   ];
   const items2 = [
-    { value: 3, label: "Đang di chuyển" },
+    { value: 2, label: "Đang di chuyển" },
     {
-      value: 4,
+      value: 3,
       label: "Hoàn thành",
     },
   ];
@@ -179,24 +179,23 @@ export default function Trip() {
             e.stopPropagation();
           }}
         >
-          {Number(text) === 4 ? (
+          {Number(text) === 3 ? (
             <p className="text-white bg-[#27AE60] w-fit p-2 rounded-3xl">
               Hoàn thành
             </p>
-          ) : Number(text) === 2 ? (
+          ) : Number(text) === 0 ? (
             <p className="w-fit p-2 rounded-3xl border border-solid border-[#4F4F4F]">
               Đã hủy
             </p>
           ) : (
             <Select
-              className={`w-full ${
-                Number(text) === 3 ? "custom1" : "custom2"
-              } `}
+              className={`w-full ${Number(text) === 2 ? "custom1" : "custom2"
+                } `}
               onChange={(e) => {
                 updateStatusTrip(e, record.id);
               }}
               defaultValue={Number(text)}
-              options={Number(text) === 3 ? items2 : items1}
+              options={Number(text) === 2 ? items2 : items1}
             />
           )}
         </div>
@@ -210,12 +209,13 @@ export default function Trip() {
             e.stopPropagation();
             setIsModal({ isOpen: true, mode: "edit" });
             setTripId(record.chuyenid);
-            form.setFieldsValue(record);
-            form.setFieldValue("idDiemDi", record.address.split("+")[0]);
-            form.setFieldValue(
-              "idDiemDen",
-              record.address.split("+").slice(1).join("+")
-            );
+            form.setFieldsValue({
+              maChuyen: record.maChuyen,
+              tuyenDuongId: record.tuyenDuongId,
+              xeId: record.xeId,
+              idDiemDi: record.address.split("+")[0],
+              idDiemDen: record.address.split("+")[1],
+            });
           }}
           type="primary"
         >
@@ -229,12 +229,12 @@ export default function Trip() {
     const formattedDate = `${values.thoiGianDi.$D
       .toString()
       .padStart(2, "0")}/${(values.thoiGianDi.$M + 1)
-      .toString()
-      .padStart(2, "0")}/${values.thoiGianDi.$y} ${values.thoiGianDi.$H
-      .toString()
-      .padStart(2, "0")}:${values.thoiGianDi.$m
-      .toString()
-      .padStart(2, "0")}:${values.thoiGianDi.$s.toString().padStart(2, "0")}`;
+        .toString()
+        .padStart(2, "0")}/${values.thoiGianDi.$y} ${values.thoiGianDi.$H
+          .toString()
+          .padStart(2, "0")}:${values.thoiGianDi.$m
+            .toString()
+            .padStart(2, "0")}:${values.thoiGianDi.$s.toString().padStart(2, "0")}`;
     const data = {
       maChuyen: values.maChuyen,
       tuyenDuongId: values.tuyenDuongId,
@@ -250,7 +250,7 @@ export default function Trip() {
       xeId: values.xeId,
       idDiemDi: values.idDiemDi,
       idDiemDen: values.idDiemDen,
-      thoiGianDi: formattedDate,
+      // thoiGianDi: formattedDate,
     };
     const res = await apiCaller({
       request:
@@ -313,7 +313,7 @@ export default function Trip() {
             <Form.Item
               label="Mã chuyến"
               name="maChuyen"
-              rules={[{ required: true, message: "Vui lòng nhập biển số xe" }]}
+              rules={[{ required: true, message: "Vui lòng nhập Mã chuyến" }]}
             >
               <Input className="h-12" type="text" />
             </Form.Item>
@@ -321,7 +321,7 @@ export default function Trip() {
             <Form.Item
               label="Biển số xe"
               name="xeId"
-              rules={[{ required: true, message: "Vui lòng nhập Sđt tài xế" }]}
+              rules={[{ required: true, message: "Vui lòng nhập Biển số xe" }]}
             >
               <Select
                 placeholder="Chọn địa điểm"
@@ -333,7 +333,7 @@ export default function Trip() {
             <Form.Item
               label="Điểm đi"
               name="idDiemDi"
-              rules={[{ required: true, message: "Vui lòng chọn hạng xe" }]}
+              rules={[{ required: true, message: "Vui lòng chọn Điểm đi" }]}
             >
               <Select
                 placeholder="Chọn địa điểm"
@@ -345,7 +345,7 @@ export default function Trip() {
             <Form.Item
               label="Điểm đến"
               name="idDiemDen"
-              rules={[{ required: true, message: "Vui lòng chọn tuyến đường" }]}
+              rules={[{ required: true, message: "Vui lòng chọn Điểm đến" }]}
             >
               <Select
                 placeholder="Chọn địa điểm"
@@ -354,13 +354,15 @@ export default function Trip() {
                 options={itemRoute}
               />
             </Form.Item>
-            <Form.Item
+            {tripId === null ? (<Form.Item
               label="Thời gian xuất bến"
               name="thoiGianDi"
               rules={[{ required: true, message: "Vui lòng nhập giá vé" }]}
             >
               <DatePicker showTime />
-            </Form.Item>
+            </Form.Item>) : null}
+
+
           </div>
           <Form.Item className="flex justify-end">
             <Button
@@ -375,7 +377,7 @@ export default function Trip() {
               Hủy
             </Button>
 
-            <Button className="h-12 w-32" type="primary" htmlType="submit">
+            <Button className="h-12 w-32 ml-5" type="primary" htmlType="submit">
               Lưu
             </Button>
           </Form.Item>

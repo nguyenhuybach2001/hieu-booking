@@ -86,7 +86,7 @@ export default function Route() {
           onClick={() => {
             setIsModal({ isOpen: true, mode: "edit" });
             setRouteId(record.tuyenDuongID);
-            form.setFieldsValue(record);
+            form.setFieldValue(record);
           }}
           type="primary"
           className="bg-[#F2994A]"
@@ -122,7 +122,6 @@ export default function Route() {
       form.resetFields();
     }
   };
-
   const result = dataLocals.map(item => ({
     value: item.id,
     label: item.name

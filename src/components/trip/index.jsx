@@ -55,7 +55,7 @@ export default function Trip(props) {
         {props.title}
         <div>
           <ul>
-            {props.content.map((item, i) => (
+            {props.content?.map((item, i) => (
               <li key={i} className="ml-10 mt-2 list-disc">
                 {item}
               </li>

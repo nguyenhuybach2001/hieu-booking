@@ -13,6 +13,7 @@ import { localApi } from "@/api/localApi";
 import { tripApi } from "@/api/tripApi";
 import { routeApi } from "@/api/routeApi";
 import { ticketApi } from "@/api/ticketApi";
+import { xeApi } from "@/api/xeApi";
 
 export default function Info() {
   const [notification, setNotification] = useState("1");
@@ -28,6 +29,7 @@ export default function Info() {
   const [dataLocals, setDataLocals] = useState([])
   const [tripId, setTripId] = useState([])
   const [trip, setTrip] = useState([])
+  const [car, setCar] = useState([])
   const [pay, setPay] = useState('1')
 
   const router = useRouter();
@@ -74,6 +76,16 @@ export default function Info() {
     }
 
   }
+  const getListCar = async () => {
+    const res = await apiCaller({
+      request: xeApi.getAllVehicles(),
+      errorHandler,
+    });
+    if (res) {
+      setCar(res.data)
+    }
+
+  }
   //call api lấy ra địa điểm
   const getLocationTreeByCondition = async () => {
     const data = {
@@ -106,10 +118,10 @@ export default function Info() {
   }, [tripId])
   //call api lấy ra danh sách chuyến đi
   useEffect(() => {
+    getListCar()
     getListSeat()
     getLocationTreeByCondition()
   }, [])
-
   useEffect(() => {
     //chia data làm 2 mảng A,B
     const splitArrayByMaGhe = (data) => {
@@ -198,7 +210,7 @@ export default function Info() {
         <div className="grid grid-cols-10 mt-10">
           <div className="col-span-7 bg-white border-[2px] border-slate-300 rounded-xl">
             <div className="my-5 bg-slate-900 py-2 pl-2 pr-10 w-max rounded-r-xl text-white">
-              <p className="font-bold text-lg">Economy</p>
+              <p className="font-bold text-lg">{car.find((val)=>val.xeId === trip.xeId)?.tenHangXe}</p>
               <p>Di chuyển tiết kiệm</p>
             </div>
             <div className="mx-10 flex justify-between gap-16 pb-10">
@@ -211,10 +223,10 @@ export default function Info() {
                   {data1.map((seat) => (
                     <div
                       key={seat.id}
-                      className={`h-16 hover:bg-b ${seat.trangThai === '0' ? "bg-[#828282] rounded" : "cursor-pointer"} flex items-center justify-center w-14 cursor-pointer ${picked.includes(seat.gheId) ? "bg-b" : ""
+                      className={`h-16 hover:bg-b ${seat.trangThai === '1' ? "bg-[#828282] rounded" : "cursor-pointer"} flex items-center justify-center w-14 cursor-pointer ${picked.includes(seat.gheId) ? "bg-b" : ""
                         }`}
                       onClick={() => {
-                        seat.trangThai === '1' ? handlePickSeat(seat.gheId) : null
+                        seat.trangThai === '0' ? handlePickSeat(seat.gheId) : null
                       }}
                     >
                       {seat.maGhe}
@@ -231,10 +243,10 @@ export default function Info() {
                   {data2.map((seat) => (
                     <div
                       key={seat.gheId}
-                      className={`h-16 hover:bg-b ${seat.trangThai === '0' ? "bg-[#828282] rounded" : "cursor-pointer"} flex items-center justify-center w-14  ${picked.includes(seat.gheId) ? "bg-b" : ""
+                      className={`h-16 hover:bg-b ${seat.trangThai === '1' ? "bg-[#828282] rounded" : "cursor-pointer"} flex items-center justify-center w-14  ${picked.includes(seat.gheId) ? "bg-b" : ""
                         }`}
                       onClick={() => {
-                        seat.trangThai === '1' ? handlePickSeat(seat.gheId) : null
+                        seat.trangThai === '0' ? handlePickSeat(seat.gheId) : null
                       }}
                     >
                       {seat.maGhe}

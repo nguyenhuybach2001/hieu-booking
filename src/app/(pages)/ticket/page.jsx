@@ -1,6 +1,7 @@
 "use client";
 import apiCaller from "@/api/apiCaller";
 import { localApi } from "@/api/localApi";
+import { rankCarApi } from "@/api/rankCarApi";
 import { ticketApi } from "@/api/ticketApi";
 import { tripApi } from "@/api/tripApi";
 import { xeApi } from "@/api/xeApi";
@@ -41,6 +42,7 @@ export default function Ticket() {
   const [tgDen, setTgDen] = useState("");
   const [trip, setTrip] = useState([]);
   const [ticket, setTicket] = useState([]);
+  const [listRankCar, setListRankCar] = useState([]);
   const [soGhe, setSoGhe] = useState([]);
   const [giaVe, setGiaVe] = useState([]);
   const [dataLocals, setDataLocals] = useState([]);
@@ -88,6 +90,7 @@ export default function Ticket() {
       setListVehicles(res.data);
     }
   };
+
   //call api lấy ra địa điểm
   const getLocationTreeByCondition = async () => {
     const data = {
@@ -116,7 +119,7 @@ export default function Ticket() {
       setTgDen(res.data.thoiGianDi.split(' ')[1])
     }
   };
-  console.log(listVehicles);
+  console.log(ticket, "fffff");
   useEffect(() => {
     const ticketId = localStorage.getItem("ticketId");
     setTicketId(ticketId);
@@ -185,7 +188,7 @@ export default function Ticket() {
         <div className="bg-white w-full rounded-xl grid grid-cols-12 mb-10">
           <div className="col-span-1 bg-slate-700 w-full"></div>
           <div className="col-span-11 px-9 py-5">
-            <p className=" text-center text-slate-400 ">Economic</p>
+            <p className=" text-center text-slate-400 ">{listVehicles.find((val) => val.xeId === trip.xeId)?.tenHangXe}</p>
             <div className="grid grid-cols-3 gap-2 mt-6 mb-4">
               <div className="col-span-1 justify-between flex flex-col gap-3 w-full">
                 <p className="font-bold">

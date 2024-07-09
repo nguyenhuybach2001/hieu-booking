@@ -13,6 +13,7 @@ export default function Ticket() {
   const errorHandler = (error) => {
     console.log("Fail: ", error);
   };
+  
   const listTrips = async () => {
     const res = await apiCaller({
       request: tripApi.listTrips(),
@@ -33,6 +34,19 @@ export default function Ticket() {
       console.log(res.data)
     }
   };
+  const updateStatusTrip = async (id, e) => {
+    const data = {
+      veXeId: id ,
+      trangThaiVe: e
+    }
+    const res = await apiCaller({
+      request: ticketApi.updateVe(data),
+      errorHandler,
+    });
+    if (res) {
+      listVe()
+    }
+  }
   useEffect(() => {
     listTrips()
     listVe()
@@ -43,21 +57,46 @@ export default function Ticket() {
       label: "Chưa Thanh toán",
     },
     {
-      value: 2,
+      value: 0,
       label: "Hủy ",
     },
     {
-      value: 3,
+      value: 2,
       label: "Đã thanh toán",
     },
   ];
   const items2 = [
-    { value: 3, label: "Đã thanh toán" },
+    { value: 2, label: "Đã thanh toán" },
     {
-      value: 4,
+      value: 3,
       label: "Hoàn thành",
     },
   ];
+  const items3 = [
+    {
+      value: '1',
+      label: "Gọi điện",
+    },
+    {
+      value: '2',
+      label: "Nhắn tin ",
+    },
+    {
+      value: '3',
+      label: "Email",
+    },
+  ];
+  const items4 = [
+    {
+      value: '1',
+      label: "Tiền mặt",
+    },
+    {
+      value: '2',
+      label: "Online",
+    },
+  ];
+  console.log(dataTickets)
   const ExportPdfButton = () => {
     const exportPDF = () => {
       const input = document.getElementById('table-to-pdf');
@@ -94,6 +133,22 @@ export default function Ticket() {
       key: "gheDat",
     },
     {
+      title: "Hình thức thông báo",
+      dataIndex: "thongBao",
+      key: "thoiGianDiChuyen",
+      render: (id) => (
+        items3.find((item) => item.value === id)?.label
+      ),
+    },
+    {
+      title: "Hình thức thanh toán",
+      dataIndex: "thanhToan",
+      key: "thoiGianDiChuyen",
+      render: (id) => (
+        items4.find((item) => item.value === id)?.label
+      ),
+    },
+    {
       title: "Trạng thái",
       key: "status",
       align: "center",
@@ -106,23 +161,23 @@ export default function Ticket() {
             e.stopPropagation();
           }}
         >
-          {Number(text) === 4 ? (
+          {Number(text) === 3 ? (
             <p className="text-white bg-[#27AE60] w-fit p-2 rounded-3xl">
               Hoàn thành
             </p>
-          ) : Number(text) === 2 ? (
+          ) : Number(text) === 0 ? (
             <p className="w-fit p-2 rounded-3xl border border-solid border-[#4F4F4F]">
               Đã hủy
             </p>
           ) : (
             <Select
-              className={`w-full ${Number(text) === 3 ? "custom1" : "custom2"
+              className={`w-full ${Number(text) === 2 ? "custom1" : "custom2"
                 } `}
               onChange={(e) => {
-                updateStatusTrip(e, record.id)
+                updateStatusTrip(record.veXeId, e)
               }}
               defaultValue={Number(text)}
-              options={Number(text) === 3 ? items2 : items1}
+              options={Number(text) === 2 ? items2 : items1}
             />
           )}
         </div>

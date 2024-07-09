@@ -70,8 +70,8 @@ export default function AdminLayout({ children }) {
             <div className=" flex mb-3 items-center justify-between">
               <Avatar size={50} />
               <div>
-                <p className="font-bold">test</p>
-                <p>test</p>
+                <p className="font-bold">Binford</p>
+                <p>admin</p>
               </div>
             </div>
             <Menu

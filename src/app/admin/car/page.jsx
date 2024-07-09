@@ -211,7 +211,8 @@ export default function Car() {
             >
               <Select
                 placeholder={"Chọn tuyến đường"}
-                style={{ width: 120 }}
+                className="w-full h-[56px] "
+                //style={{ width: 120 }}
                 options={routeSelect}
               />
             </Form.Item>
@@ -225,7 +226,7 @@ export default function Car() {
           </div>
           <Form.Item className="flex justify-end">
             <Button
-              className="h-12  w-32"
+              className="h-12 m-3 w-32"
               onClick={() => {
                 setIsModal({ isOpen: false, mode: "" });
                 form.resetFields();
@@ -239,13 +240,13 @@ export default function Car() {
               <Button
                 danger
                 type="primary"
-                className="h-12 m-5 w-32"
+                className="h-12 m-3 w-32"
                 onClick={handleDelete}
               >
                 Xóa
               </Button>
             )}
-            <Button className="h-12 w-32" type="primary" htmlType="submit">
+            <Button className="h-12 m-3 w-32" type="primary" htmlType="submit">
               Lưu
             </Button>
           </Form.Item>

@@ -18,11 +18,13 @@ import { routeApi } from "@/api/routeApi";
 import { localApi } from "@/api/localApi";
 import { xeApi } from "@/api/xeApi";
 
+import moment from 'moment';
+
 export default function Trip() {
   const [form] = Form.useForm();
   const [tripId, setTripId] = useState(null);
   const [isModal, setIsModal] = useState({ isOpen: false, mode: "" });
-  const [dataRoutes, setDataRoutes] = useState([]);
+  const [dataRoute, setDataRoutes] = useState([]);
   const [dataSource, setDataSource] = useState([]);
   const [dataLocals, setDataLocals] = useState([]);
   const [dataCar, setDataCar] = useState([]);
@@ -69,6 +71,7 @@ export default function Trip() {
     });
     if (res) {
       setDataCar(res.data);
+      console.log(res.data);
     }
   };
   const updateStatusTrip = async (status, chuyenId) => {
@@ -118,7 +121,7 @@ export default function Trip() {
       id: val.chuyenId,
       xeId: val.xeId,
       gheConTrong: val.gheConTrong,
-      thoiGianDi: val.thoiGianDi,
+      thoiGianDi: moment(val.thoiGianDi, "DD/MM/YYYY HH:mm:ss"),
       maChuyen: val.maChuyen,
       tuyenDuongId: val.tuyenDuongId,
       status: val.trangThai,
@@ -164,7 +167,10 @@ export default function Trip() {
     {
       title: "Thời gian xuất bến",
       dataIndex: "thoiGianDi",
-      key: "thoiGianDiChuyen",
+      key: "thoiGianDi",
+      render(momentTime) {
+        return momentTime.format("DD/MM/YYYY HH:mm");
+      }
     },
     {
       title: "Trạng thái",
@@ -208,7 +214,8 @@ export default function Trip() {
           onClick={(e) => {
             e.stopPropagation();
             setIsModal({ isOpen: true, mode: "edit" });
-            setTripId(record.chuyenid);
+            setTripId(record.id);
+            //setDataRoutes(record.tuyenDuongId)
             form.setFieldsValue({
               maChuyen: record.maChuyen,
               tuyenDuongId: record.tuyenDuongId,
@@ -225,6 +232,7 @@ export default function Trip() {
       key: "detail_ticket",
     },
   ];
+
   const handleFormSubmit = async (values) => {
     const formattedDate = `${values.thoiGianDi.$D
       .toString()
@@ -235,6 +243,7 @@ export default function Trip() {
           .padStart(2, "0")}:${values.thoiGianDi.$m
             .toString()
             .padStart(2, "0")}:${values.thoiGianDi.$s.toString().padStart(2, "0")}`;
+    //const formattedDate = moment(values.thoiGianDi, "DD/MM/YYYY HH:mm:ss");
     const data = {
       maChuyen: values.maChuyen,
       tuyenDuongId: values.tuyenDuongId,
@@ -250,16 +259,18 @@ export default function Trip() {
       xeId: values.xeId,
       idDiemDi: values.idDiemDi,
       idDiemDen: values.idDiemDen,
-      // thoiGianDi: formattedDate,
+      thoiGianDi: formattedDate,
     };
     const res = await apiCaller({
       request:
-        tripId !== null ? tripApi.updateTrip(data1) : tripApi.createTrip(data),
+        isModal.mode === "edit" ? tripApi.updateTrip(data1) : tripApi.createTrip(data),
+        //tripId !== null ? tripApi.updateTrip(data1) : tripApi.createTrip(data),
       errorHandler,
     });
     if (res) {
       console.log(res.data);
-      listTrips();
+      await listTrips();
+      await getAllCar();
     }
     setIsModal({ isOpen: false, mode: "" });
     form.resetFields();
@@ -272,6 +283,15 @@ export default function Trip() {
     value: item.code,
     label: item.name,
   }));
+  const routeSelect = dataRoute.map(item => ({
+    value: item.tuyenDuongID,
+    label: item.tenTuyenDuong
+  }));
+  const itemCar1 = dataCar.map((item) => ({
+    value: item.xeId,
+    label: item.tuyenDuongID,
+  }));
+  
   return (
     <div>
       <div className="flex justify-between items-center mb-10">
@@ -315,7 +335,7 @@ export default function Trip() {
               name="maChuyen"
               rules={[{ required: true, message: "Vui lòng nhập Mã chuyến" }]}
             >
-              <Input className="h-12" type="text" />
+              <Input className="w-full h-[56px] " type="text" />
             </Form.Item>
 
             <Form.Item
@@ -328,8 +348,30 @@ export default function Trip() {
                 className="w-full h-[56px] "
                 allowClear
                 options={itemCar}
+                onChange={(xeId) => {
+                  // Find the corresponding route ID based on selected bus ID (xeId)
+                  const selectedRouteId = itemCar1.find((item) => item.value === xeId);
+                  console.log(selectedRouteId) //todo
+
+                  const routeId = selectedRouteId.label;
+
+                  // Find the corresponding route based on the route ID
+                  const selectedRoute = routeSelect.find((route) => route.value === routeId);
+
+                  console.log(selectedRoute) //todo
+
+                  const routeName = selectedRoute ? selectedRoute.label : ""; // Get the route name
+
+                  form.setFieldsValue({ tenTuyenDuong: routeName }); // Update the form field
+                  console.log(routeName)
+                }}
               />
             </Form.Item>
+
+            <Form.Item label="Tên tuyến đường" name="tenTuyenDuong">
+             <Input readOnly className="w-full h-[56px] "/>
+            </Form.Item>
+
             <Form.Item
               label="Điểm đi"
               name="idDiemDi"
@@ -353,15 +395,15 @@ export default function Trip() {
                 allowClear
                 options={itemRoute}
               />
-            </Form.Item>
-            {tripId === null ? (<Form.Item
-              label="Thời gian xuất bến"
-              name="thoiGianDi"
-              rules={[{ required: true, message: "Vui lòng nhập giá vé" }]}
-            >
-              <DatePicker showTime />
-            </Form.Item>) : null}
-
+            </Form.Item>{
+              (<Form.Item
+                label="Thời gian xuất bến"
+                name="thoiGianDi"
+                rules={[{ required: true, message: "Vui lòng nhập Thời gian xuất bến" }]}
+              >
+                <DatePicker showTime className="w-full h-[56px] "/>
+              </Form.Item>)
+              }
 
           </div>
           <Form.Item className="flex justify-end">

@@ -165,7 +165,7 @@ export default function Route() {
               { required: true, message: "Vui lòng nhập tên tuyến đường" },
             ]}
           >
-            <Input className="h-12" type="text" />
+            <Input className="h-12 w-full h-[56px]" type="text" />
           </Form.Item>
           <div className="grid grid-cols-2 gap-8">
             <Form.Item
@@ -202,14 +202,14 @@ export default function Route() {
                 message: "Chỉ được phép nhập số",
               },]}
             >
-              <Input className={"h-12"} type="text" />
+              <Input className="w-full h-[56px] " type="text" />
             </Form.Item>
             <Form.Item
               label="Thời gian di chuyển"
               name="thoiGianDiChuyen"
               rules={[{ required: true, message: "Vui lòng nhập thời gian di chuyển" }]}
             >
-              <Input className={"h-12"} type="text" />
+              <Input className="w-full h-[56px] " type="text" />
             </Form.Item>
           </div>
           <Form.Item className="flex justify-end">

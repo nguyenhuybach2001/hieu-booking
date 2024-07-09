@@ -19,8 +19,8 @@ export default function Search() {
   const pathName = usePathname();
   const [local, setLocal] = useState([])
   const [searchInfo, setSearchInfo] = useState({
-    idDiemDi: "617a1dad-5a0d-480f-8cd5-88c5cb4bd9d5",
-    idDiemDen: "d9e52f07-01f7-4645-9a05-0ff724370cb5",
+    idDiemDi: "373fa84a-959b-4319-8c33-3100660efe39",
+    idDiemDen: "0fba60e1-f0cd-42b3-a765-ce5641da3163",
     thoiGianDi: dayjs().format("DD/MM/YYYY"),
   });
   console.log(searchInfo)
@@ -95,6 +95,7 @@ export default function Search() {
       thoiGianDi: dayjs(date).format("DD/MM/YYYY"),
     });
   };
+
   return (
     <div
       className={`bg-white relative rounded-xl p-5 ${pathName === "/" ? "-top-10" : ""
